@@ -1,14 +1,73 @@
 # On transforms and planes.
 
-Here is test formula.
+### If we want to transform a line or plane using an affine transformation...
+
+Given a transformation matrix in let's say, two dimensions:
 
 $$
-M = \left( \begin{array}{ccc}
-x_{11} & x_{12} & \ldots \\
-x_{21} & x_{22} & \ldots \\
-\vdots & \vdots & \ldots \\
-\end{array} \right)
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix} =
+\begin{bmatrix} x' \\ y' \end{bmatrix}
 $$
 
+We notice that the origin \(\begin{bmatrix} 0 \\ 0 \end{bmatrix}\) always transforms to itself. That is to say
+that a standard transformation matrix cannot encode a translation without help. We can add a translation term to
+make this happen:
+
+$$
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix} +
+\begin{bmatrix} e \\ f \end{bmatrix} =
+\begin{bmatrix} x' \\ y' \end{bmatrix}
+$$
+
+Which is essentially equivalent to:
+
+$$
+\begin{bmatrix} a & b & e \\ c & d & f \\ 0 & 0 & 1 \end{bmatrix}
+\begin{bmatrix} x \\ y \\ 1 \end{bmatrix} =
+\begin{bmatrix} x' \\ y' \\ 1 \end{bmatrix}
+$$
+
+Which we will write from now on as:
+
+$$
+Tv = v'
+$$
+
+This is the basis of the affine transform. Adding that extra \(1\) to the end of our coordinates makes them
+*homogenous coordinates*. For most intents and
+purposes, we can ignore it.
+
+The general equation of a line in two dimensions is given by a set of points \(\begin{bmatrix} x \\ y
+\end{bmatrix}\) satisfying the equation \( ax + by + c = 0 \). This is usually better than it's simpler cousin \( y
+= mx + c \), because that structure has trouble representing vertical lines. This formula can be written as:
+
+$$
+\begin{bmatrix} a & b & c \end{bmatrix}
+\begin{bmatrix} x \\ y \\ 1 \end{bmatrix} = 0
+$$
+
+or simply
+
+$$
+nv = 0
+$$
+
+where \( \begin{bmatrix} a & b \end{bmatrix} \) happens to be a vector perpendicular to the line. In order to
+transform a line using an affine transform matrix so that \(nv = 0 \rightarrow n'v' = 0\) where \(v' = Tv \), the
+transformed points
+must
+satisfy the following equation:
+
+$$
+nv = 0 \\
+n(T^{-1}v') = 0 \\
+(nT^{-1})v' = 0
+$$
+
+Which implies that \(n' = nT^{-1} \). If we consider that \(n\) is a normal for a line in 2d space, or plane in 3d
+space, we can use it to transform a plane using an affine transform and back again. This is useful when trying to
+renter scenes using raytracing and constructive solid geometry.
 
 {% include math.html %}
