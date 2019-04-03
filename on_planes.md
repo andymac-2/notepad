@@ -66,6 +66,6 @@ $$
 
 Which implies that $$n' = nT^{-1} $$. If we consider that $$n$$ is a normal for a line in 2d space, or plane in 3d
 space, we can use it to transform a plane using an affine transform and back again. This is useful when trying to
-renter scenes using raytracing and constructive solid geometry.
+render scenes using raytracing and constructive solid geometry.
 
 {% include math.html %}
