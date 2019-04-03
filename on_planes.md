@@ -1,6 +1,6 @@
 # On transforms and planes.
 
-Hewre is test formula.
+Here is test formula.
 
 $$
 M = \left( \begin{array}{ccc}
@@ -9,3 +9,6 @@ x_{21} & x_{22} & \ldots \\
 \vdots & \vdots & \ldots \\
 \end{array} \right)
 $$
+
+
+{% include math.html %}
