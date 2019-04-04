@@ -72,7 +72,7 @@ getLinesTwoAndFour = go
 
 If we remove the `>` preceding the call to `getLine`, then we perform the action, but toss the result. This works for both `<$>` and `<*>`.
 
-Consider a different applicative instance using `State`. We implement a basic stack. The implementation is not important, suffice to say that `push` and `pop` do exactly as expected:
+Consider a different `Applicative` instance using `State`. We implement a basic stack. The implementation is not important, suffice to say that `push` and `pop` do exactly as expected:
 
 ```haskell
 import Control.Monad.State
@@ -99,7 +99,7 @@ ghci> runState doSomething [5, 2, 10]
 (50,[15])
 ```
 
-where `5` is the top of the stack and `10` is the bottom. `doSomething` pops `5`, `2` and `10` off the stack, and pushes `15` onto it, leaving our stack to be `[15]`. The return value is `50` (`5` * `10`), therefore the result of runState will be `(50, [15])`.
+where `5` is the top of the stack and `10` is the bottom. `doSomething` pops `5`, `2` and `10` off the stack, and pushes `15` onto it, leaving our stack to be `[15]`. The return value is `50` (`5` * `10`), therefore the result of `runState` will be `(50, [15])`.
 
 ### Golden rules
 
