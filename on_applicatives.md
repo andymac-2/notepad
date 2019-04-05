@@ -4,6 +4,8 @@
 
 Skip to the end to read the "golden rules" of applicative functors. 
 
+![A mysterious symbol appears.](img/on_applicative.jpg)
+
 Consider a datatype which belongs to the `Aplicative` typeclass in Haskell. `Applicative` allows us to combine actions together, as long as the return result of the actions do not need to be used by other actions. Consider the following example:
 
 ```haskell
