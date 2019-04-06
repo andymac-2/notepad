@@ -1,9 +1,10 @@
+---
+title: On Arithmetic
+---
 {% include math.html %}
-# On Arithmetic
-
 ### It seems obvious that 2 + 2 ≠ 5...
 
-![2 + 2 is actually not equal to five as previously thought](img/on_arithmetic.jpg)
+![Or is it?](/img/on_arithmetic.jpg)
 
 A rigorous proof that 2 + 2 ≠ 5 is not particularly trivial. In order to be
 concise, we need to begin with some definitions:
@@ -15,23 +16,28 @@ $$ 0 \in \mathbb{N} \label{axiom0} \\
 \forall x \in \mathbb{N}, x + 0 = x \\
 \forall x, y \in \mathbb{N}, x + S(y) = S(x + y) $$
 
-Which is seems more complicated than it is. "∀" means "for all". "∈" means
-"element of" "belongs to" or "in". The "N" is a symbol for the natural
-numbers (0, 1, 2, 3 ...). "¬" means "not". "⇔" means "if and only if". The
-only other part here that hasn't been described is "S()", the successor
+Which is seems more complicated than it is. 
+
+- "∀" means "for all". 
+- "∈" means "element of" "belongs to" or "in". 
+- "ℕ" is a symbol for the natural numbers (0, 1, 2, 3 ... etc.). 
+- "¬" means "not". 
+- "⇔" means "if and only if". 
+
+The only other part here that hasn't been described is "S()", the successor
 function. The successor of a number is the number after itself, for example,
 *S(0) = 1*, and *S(3) = 4*.
 
-The axioms above in english for reference are as follows:
+The axioms above in English for reference are as follows:
 
 1. *0* is a natural number
 2. For every natural number *x*, the number after *x* is also a natural number.
-3. For any two natural numbers *x* and *y*, if x = y, then S(x) = S(y) and if S(x) = S(y) then x = y
-4. 0 does not come after any natural number.
+3. For any two natural numbers *x* and *y*, if *x = y, then S(x) = S(y)* and if *S(x) = S(y)* then *x = y*
+4. *0* does not come after any natural number.
 5. Any natural number plus zero is itself
-6. For any two natural numbers *x* and *y*, x + S(y) = S(x + y)
+6. For any two natural numbers *x* and *y*, *x + S(y) = S(x + y)*
 
-This is sufficient to prove 2 + 2 ≠ 5. For brevity we have left out some
+This is sufficient to prove *2 + 2 ≠ 5*. For brevity we have left out some
 axioms of equality.
 
 We define 2 as *S(S(0))* and we define 5 as *S(S(S(S(S(0)))))*. To prove
@@ -78,5 +84,5 @@ $$
 or:
 
 $$
-2 + 2 ≠ 5
+2 + 2 \neq 5
 $$
