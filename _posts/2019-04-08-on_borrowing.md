@@ -105,11 +105,9 @@ println!("{}", y);
 // we should not access it directly:
 // println!("{}", x);       // ERROR!
 
-//  We create a new reference and a new value at the same time. The new
-//  reference shadows the old reference and the new value shadows the old value.
-//  The old reference was the only way to access the old value, so we can safely
-//  overwrite the old value with the new value. We overwrite the old reference
-//  with the new reference that points to the same location as the old value.
+//  We create a new reference and a new value at the same time. We can safely
+// overwrite the old value and the old reference because their names have been
+// shadowed. The net result is that only the value has changed.
 *y = 4;
 println!("{}", y); 
 
@@ -117,10 +115,13 @@ println!("{}", y);
 println!("{}", y);
 ```
 
+![mutable references](/img/mutable_reference.jpg)
+
 Which almost completely explains the behavior of the borrow checker. In summary:
 
 - Consider all variables in rust to be immutable, and all references to be immutable references.
 - We do not mutate variables, we just create new ones.
+- If we cannot modify a variable, we can never have data races.
 - If a variable has a valid reference to itself, we cannot safely overwrite the variable's memory with something else. (Explains immutable borrows)
 - A `mut` annotation on a reference indicates that it is the only way to access a variable. (Explains why you cannot borrow mutably and immutably at the same time, explains why you can only have a single mutable borrow)
 - A `mut` annotation on a variable indicates that the memory may be overwritten if there is a unique reference to it and that unique reference is shadowed, or if there are no references to it, and the variable itself is shadowed. (Explains mutable borrows)

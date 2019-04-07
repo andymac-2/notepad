@@ -2,3 +2,22 @@
     display: flex;
     justify-content: space-between;
 }
+
+.btn-active {
+    color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.2);
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.btn-active:hover {
+    color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.btn-inactive, .btn-inactive:hover{
+    color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
+}

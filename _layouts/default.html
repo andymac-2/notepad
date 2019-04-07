@@ -30,17 +30,10 @@
         {% endif %}
         <h2 class="project-tagline">
             {{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
-        <div class="navbar">
-            {% if page.previous %}
-            <a href="{{ page.previous.url }}" class="btn">Previous</a>
-            {% endif %}
-            {% if page.next %}
-            <a href="{{ page.next.url }}" class="btn">Next</a>
-            {% endif %}
-        </div>
     </header>
 
     <main id="content" class="main-content" role="main">
+
         {{ content }}
 
         <p>
@@ -50,7 +43,19 @@
         </p>
 
         <footer class="site-footer">
+            <div class="navbar">
+                {% if page.previous %}
+                <a href="{{ page.previous.url }}" class="btn btn-active">Previous</a>
+                {% else %}
+                <a href="#" class="btn btn-inactive">Previous</a>
+                {% endif %}
 
+                {% if page.next %}
+                <a href="{{ page.next.url }}" class="btn btn-active">Next</a>
+                {% else %}
+                <a href="#" class="btn btn-inactive">Next</a>
+                {% endif %}
+            </div>
             <span>
                 <h3>Latest posts</h3>
                 <ul>
