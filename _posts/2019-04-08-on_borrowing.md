@@ -115,7 +115,7 @@ println!("{}", y);
 println!("{}", y);
 ```
 
-![mutable references](/img/mutable_reference.jpg)
+![mutable references]({{ '/img/mutable_reference.jpg' | relative_url }})
 
 Which almost completely explains the behavior of the borrow checker. In summary:
 
