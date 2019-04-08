@@ -19,7 +19,7 @@
     <meta name="theme-color" content="#157878">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <link rel="stylesheet" href="/assets/css/additional.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/additional.css">
 </head>
 
 <body>
@@ -45,13 +45,13 @@
         <footer class="site-footer">
             <div class="navbar">
                 {% if page.previous %}
-                <a href="{{ page.previous.url }}" class="btn btn-active">Previous</a>
+                <a href="{{ site.baseurl }}{{ page.previous.url }}" class="btn btn-active">Previous</a>
                 {% else %}
                 <a href="#" class="btn btn-inactive">Previous</a>
                 {% endif %}
 
                 {% if page.next %}
-                <a href="{{ page.next.url }}" class="btn btn-active">Next</a>
+                <a href="{{ site.baseurl }}{{ page.next.url }}" class="btn btn-active">Next</a>
                 {% else %}
                 <a href="#" class="btn btn-inactive">Next</a>
                 {% endif %}
@@ -61,7 +61,8 @@
                 <ul>
                     {% for post in site.posts %}
                     <li>
-                        <a href="{{ post.url }}">{{ post.date | date_to_string}} - {{ post.title }}</a>
+                        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.date | date_to_string}} -
+                            {{ post.title }}</a>
                     </li>
                     {% endfor %}
                 </ul>
