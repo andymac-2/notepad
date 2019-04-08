@@ -4,7 +4,7 @@ title: On Arithmetic
 {% include math.html %}
 ### It seems obvious that 2 + 2 ≠ 5...
 
-![Or is it?]({{/img/on_arithmetic.jpg | relative_url }})
+![Or is it?]({{'/img/on_arithmetic.jpg' | relative_url }})
 
 A rigorous proof that 2 + 2 ≠ 5 is not particularly trivial. In order to be
 concise, we need to begin with some definitions:
