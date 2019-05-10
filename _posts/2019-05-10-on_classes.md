@@ -1,103 +1,101 @@
 ---
-title: Portfolio
-category: portfolio
+title: On Invariants
+category: notes
 tags:
+- Rust
+- Trait
+- Struct
+- Class
+- Types
+- Invariant
 - Programming
 ---
 
-# Larger applications
+### What is an invariant? 
 
-## MilestoneMap
+- The specification of a program should be its class invariants
+- Aim to write programs so that you cannot create invalid objects or data.
 
-![Milestone Map screenshot]({{ '/img/milestoneMapScreen.png' | relative_url}})
+![Not that kind of class.]({{ '/img/2019-05-10on_classes.jpg' | relative_url}})
 
-An application used to track project and programme delivery, and display this information in an easy to read and interpret format. MilestoneMap allows a project manager to communicate and compare otcomes to stakeholders.
+I'll use Rust as the language to describe the concepts behind this post, but try to make it accessible to those using other languages.
 
-MilestoneMap can be used as a single page web app on GitHub [here](https://andymac-2.github.io/milestoneMap/)
+We can start with a simple object, such as a circle. A circle is completely defined by it's radius. As long as our radius is positive, we have a valid circle:
 
-`JavaScript`, `HTML`, `SVG`, `CSS`.
+```rust
+#[derive(Debug)]
+struct Circle {
+    radius: f64
+}
 
-## TrakMap
+impl Circle {
+    fn new_option (radius: f64) -> Option<Circle> {
+        if radius > 0.0 {
+            Some(Circle {radius: radius})
+        }
+        else {
+            None
+        }
+    }
 
-A sister application to Milestone Map. TrakMap allows a project manager to communicate dependencies, critical products, and scheduling to stakeholders. The main aim of TrakMap is to produce easy to read and interpret diagrams.
-
-TrakMap can be used as a single page web app on GitHub [here](https://andymac-2.github.io/trakMap/)
-
-`JavaScript`, `HTML`, `SVG`, `CSS`.
-
-## Gloop
-
-![Gloop cow]({{ '/img/gloopScreen.png' | relative_url}})
-
-Gloop is a platformer game made for the November 2018 Github game jam. The game was created in a single month using Godot and GDScript. This game features original artwork with colourful landscapes, puzzles, multiple power-ups, and natural physics.
-
-Gloop placed 13th overall out of approximately 330 submissions.
-
-Gloop can be played directly in the browser, or downloaded at itch.io [here](https://pilotinpyjamas.itch.io/gloop)
-
-`Godot`, `GDScript`, `GIMP`.
-
-## Raytrace
-
-![Raytrace Screen]({{ '/img/raytraceScreen.png' | relative_url}})
-
-Raytrace is a simple path tracing program written in Rust using a physical light model. Rendering uses fresnel equations to accurately simulate the natural path and attenuation of light as is passes through and reflects off objects. Caustics and global illumination are emergent properties of the physical equations used to describe the lighting model.
-
-`Rust`, `PPM`.
-
-# Toys, proof of concept, and smaller applications
-
-## Asteroids
-
-![Asterids Clone]({{ '/img/asteroidsScreen.png' | relative_url}})
-
-Asteroids is a clone of the original Asteroids arcade cabinet game written in Haskell using SDL for IO. Functional programming makes it easy to create well structured applications, leading to a clean and strictly hierarchical design. This is an example of these design patterns.
-
-Asteroids can be seen on GitHub [here](https://github.com/andymac-2/asteroids)
-
-`Haskell`, `SDL`.
-
-## Fourier Polygon
-
-![Fourier transform]({{ '/img/fourierPolygonScreen.svg' | relative_url}})
-
-Joseph Fourier was a french mathematician that proved that any complex, repeating signal could be decomposed into complex exponentials. We use this property to show that we can draw arbitrary shapes using series of circles rotating at a constant angular velocity. We can think of each circle as a cog in a complex machine, or as a series of clock hands spinning at different rates. This program also demonstrates that in certain degenerate cases, interpolation between individual points is often not ideal.
-
-The user can provide a series of points to draw any shape they like, and this library exposes a simple API to embed a canvas in any webpage.
-
-Fourier Polygon can be demo'd [here](https://andymac-2.github.io/fourier-polygon/). A more detailed writeup can be found [here](https://github.com/andymac-2/fourier-polygon)
-
-`JavaScript`, `SVG`, `CSS`, `Fourier Transform`.
-
-## Vectors in C
-
-C lacks many features of modern languages, including generic, typesafe data structures. This library is a demonstration of how to monomorphise generic data structures by including C files multiple times. Some macros are required to concatenate function names together. Vectors created using this library are typesafe, and specialised for each declared type.
-
-The C Vector library can be seen on GitHub [here](https://github.com/andymac-2/c_vector)
-
-`C`.
-
-## SubWorld
-
-```
-start:
-    # putchar until null terminator
-    helloString -1 -1;
-
-    # increment text pointer
-    data.1 start;
-
-    # goto start
-    data.0 data.0 start;
-
-helloString:
-    "Hello World!\n\0";
-
-data:
-    [0x00, -1];
+    fn new_assert (radius: f64) -> Circle {
+        assert!(radius > 0.0);
+        Circle {radius: radius}
+    }
+}
 ```
 
-An esoteric programming language consisting of only two symbols: `hello` and `world`. We provide a `C` runtime. Because programs in this language are so notoriously difficult to write, A compiler from a more sane language written in Haskell is provided. The input for this compiler is shown above.
+For this example, we have two constructors: `new_option` and `new_assert`. They are two versions of the same constructor. The `new_assert` function takes a radius, returns a circle if the radius is positive, and kills the program if it is not. The `new_option` function takes a radius, returns a circle if the radius is positive, and returns nothing if it is not. Discussion on which method is more appropriate to use is left for another time.
 
-`Haskell`, `parsing`.
+It is impossible to create a circle with a negative radius if we can only use `new_option` or `new_assert`. Seeing as we have no functions available to modify a circle once we have created it, we can safely assume that every circle we encounter in our program will always have a positive radius. A positive radius is therefore an *invariant* of a circle.
 
+We can extend out program to be able to modify a circle:
+
+```rust
+impl Circle {
+    // Constructors.
+
+    fn grow (&mut self, length: f64) {
+        self.radius += length;
+    }
+
+    fn shrink (mut self, length: f64) -> Option<Circle> {
+        if self.radius - length > 0.0 {
+            self.radius -= length;
+            Some(self)
+        }
+        else {
+            None
+        }
+    }
+}
+```
+
+We create two functions `grow` and `shrink`. The `grow` function increases the radius of a circle by `length` and the `shrink` function reduces the radius of a circle by `length`. `grow` is easy. Simply add the length to the radius. If we start off with a valid circle, then make the radius bigger, it will still be valid. `shrink` is more difficult. If we are going to make the radius smaller, we have to check that it doesn't become negative. If it becomes negative we destroy the circle. We have to destroy the circle otherwise it will no longer be valid.
+
+With a little bit of logic we can make some conclusions:
+
+- We can only construct valid circles using `new_assert` or `new_option`.
+- If we have a valid circle and we modify it using `grow`, the result will be also be valid.
+- If we have a valid circle and modify it using `shrink`, the result will either be valid, or the result will be destroyed. The rust compiler will ensure that we cannot use a circle after it has been destroyed.
+- Therefore, as long as we only use `new_assert`, `new_option`, `grow`, and `shrink`, we can not create invalid circles in our program.
+
+Obviously some invariants are going to be more complex than simply having a positive radius, but it goes to show that we can create programs which never invalidate their invariants.
+
+This is the principle behind encapsulation. If we only access the data through a few functions which only produce valid values, we will never encounter invalid values.
+
+We can use a little more logic to reason about bugs in programs:
+
+- If we can prove that a program does what it is supposed to do if it never invalidates its invariants, and
+- If we can prove that a program never invalidates its invariants:
+- Then we can prove that the program does what it is supposed to do.
+
+Furthermore
+
+- If the *only* thing a program is supposed to do is not invalidate its invariants, and
+- If the program does not invalidate its invariants,
+- Then the program is correct.
+
+If we *define* the behavior of a program (i.e. its specification) as its invariants, then we take care of step one. If we write a program so that it becomes difficult (or impossible) to invalidate invariants, then we take care of step two and our program is then correct.
+
+There are only two sources of bugs if we follow these principles. Either we don't know what we actually want (i.e. we get the specification wrong and deliberately write the wrong program), or we invalidate our invariants. This way we can narrow down where our bugs come from.
