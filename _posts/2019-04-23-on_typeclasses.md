@@ -10,7 +10,10 @@ tags:
 
 ### Rules of thumb for type constraints.
 
-![Pure and Impure]({{ '/img/2019-04-23-stack.jpg' | relative_url}})
+- Prefer manipulating data through interfaces rather than directly.
+- If one typeclass can implement a second typeclass, the first typeclass is a subtype of the second.
+
+![A generic stack]({{ '/img/2019-04-23-stack.jpg' | relative_url}})
 
 At one point I needed to implement a simple stack structure in Haskell:
 
@@ -43,7 +46,7 @@ instance Stack [] where
 Which is only slightly longer than the original, with only one extra line of code. It's usually going to be better to implement an interface and use that instead of using a data structure directly. We get the following advantages:
 
 - Code reuse across all members of the typeclass.
-- Fewer ways to write an incorrect program if we can only interact with a data structure through it's interface.
+- Fewer ways to write an incorrect program if we can only interact with a data structure through its interface.
 - Less namespace pollution.
 - Only marginally longer.
 

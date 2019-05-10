@@ -30,6 +30,10 @@
         {% endif %}
         <h2 class="project-tagline">
             {{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
+
+        <a href="{{ '/' | relative_url }}" class="btn">Home</a>
+        <a href="https://github.com/andymac-2" class="btn">GitHub</a>
+        <a href="{{ '/portfolio' | relative_url }}" class="btn">Porfolio</a>
     </header>
 
     <main id="content" class="main-content" role="main">
@@ -49,7 +53,6 @@
                 {% else %}
                 <a href="#" class="btn btn-inactive">Previous</a>
                 {% endif %}
-
                 {% if page.next %}
                 <a href="{{ page.next.url | relative_url }}" class="btn btn-active">Next</a>
                 {% else %}
