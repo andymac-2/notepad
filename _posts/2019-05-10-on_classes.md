@@ -49,7 +49,7 @@ For this example, we have two constructors: `new_option` and `new_assert`. They 
 
 It is impossible to create a circle with a negative radius if we can only use `new_option` or `new_assert`. Seeing as we have no functions available to modify a circle once we have created it, we can safely assume that every circle we encounter in our program will always have a positive radius. A positive radius is therefore an *invariant* of a circle.
 
-We can extend out program to be able to modify a circle:
+We can extend our program to be able to modify a circle:
 
 ```rust
 impl Circle {
