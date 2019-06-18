@@ -19,4 +19,8 @@ Text body.
 
 $$ math formula $$
 
-Copy from the notepad blog of github pages to medium/ wordpress, it formats better. Images will need to be copied separately.
+Copy from the notepad blog off github pages to medium/wordpress from chrome, it formats better (bolds code blocks).
+
+---
+
+This post was originally posted on [Andrew's Notepad]({{ '/' | relative_url}})
