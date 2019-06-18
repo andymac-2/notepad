@@ -34,14 +34,16 @@ impl Circle {
 }
 
 fn main () {
-    let mut c = Circle::new_assert(10.0);
-    // Circle { radius: 10.0 }
-    println!("{:?}", c);
+    // let mut c = Circle::new_assert(10.0);
+    // // Circle { radius: 10.0 }
+    // println!("{:?}", c);
 
-    c.grow(5.0);
-    // Circle { radius: 15.0 }
-    println!("{:?}", c);
+    // c.grow(5.0);
+    // // Circle { radius: 15.0 }
+    // println!("{:?}", c);
 
-    // None
-    println!("{:?}", c.shrink(20.0));
+    // // None
+    // println!("{:?}", c.shrink(20.0));
+
+
 }
