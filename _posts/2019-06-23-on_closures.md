@@ -276,7 +276,7 @@ Now we can check the behavior of it:
 assert_eq!(closure4(&obj2), 10);
 
 // We can't call closure4 twice...
-// assert_eq!(closure4(&obj2), 10);             //ERRORz
+// assert_eq!(closure4(&obj2), 10);             //ERROR
 
 // We can't borrow obj1 mutably or immutably
 // assert_eq!(obj1.get_number(), 15);           // ERROR
@@ -308,7 +308,7 @@ Which, as expected, behaves the same as our closure:
 assert_eq!(func4(ctx, &obj2), 10);
 
 // We can't call func4 twice...
-// assert_eq!(func4(ctx, &obj2), 10);             //ERRORz
+// assert_eq!(func4(ctx, &obj2), 10);             //ERROR
 
 // We can't borrow obj1 mutably or immutably
 // assert_eq!(obj1.get_number(), 15);           // ERROR
