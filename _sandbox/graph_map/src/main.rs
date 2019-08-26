@@ -130,53 +130,6 @@ impl<'a> GraphView<'a> {
     }
 }
 
-struct HashCache2 <'c, C, A1, R1, A2, R2> {
-    context: &'c C,
-    data1: HashMap<A1, R1>,
-    func1: fn(&mut Self, A1) -> R1,
-    data2: HashMap<A2, R2>,
-    func2: fn(&mut Self, A2) -> R2,
-}
-impl<'c, C, A1, R1, A2, R2> HashCache2<'c, C, A1, R1, A2, R2> where
-    A1: Eq + Hash + Clone,
-    R1: Clone,
-    A2: Eq + Hash + Clone,
-    R2: Clone,
-{
-    fn new (context: &'c C, func1: fn(&mut Self, A1) -> R1, func2: fn(&mut Self, A2) -> R2) -> Self {
-        HashCache2 {
-            context: context,
-            func1: func1,
-            func2: func2,
-            data1: HashMap::new(),
-            data2: HashMap::new(),
-        }
-    }
-    fn ctx (&self) -> &C {
-        self.context
-    }
-    fn call_one(&mut self, arg: A1) -> R1 {
-        match self.data1.get(&arg) {
-            Some(result) => result.clone(),
-            None => {
-                let result = (self.func1)(self, arg.clone());
-                self.data1.insert(arg, result.clone());
-                result
-            }
-        }
-    }
-    fn call_two(&mut self, arg: A2) -> R2 {
-        match self.data2.get(&arg) {
-            Some(result) => result.clone(),
-            None => {
-                let result = (self.func2)(self, arg.clone());
-                self.data2.insert(arg, result.clone());
-                result
-            }
-        }
-    }
-}
-
 fn main() {
     let mut graph = Graph::new();
     let n1 = graph.add_node(Task::new("Lay foundation".to_owned(), 1));

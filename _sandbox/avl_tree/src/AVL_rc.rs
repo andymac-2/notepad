@@ -10,6 +10,23 @@ impl<A: Ord> Tree<A> {
     pub fn singleton (value: A) -> Self {
         Tree::Node(Box::new(Tree::Leaf), value, Box::new(Tree::Leaf))
     }
+    pub fn find (&self, input: &A) -> bool {
+        match *self {
+            Tree::Leaf => false,
+            Tree::Node(ref left, ref value, ref right) => {
+                if input < value {
+                    left.find(input)
+                }
+                else if input > value {
+                    right.find(input)
+                }
+                else {
+                    assert!(input == value);
+                    true
+                }
+            }
+        }
+    }
     pub fn insert (&mut self, input: A) {
         match *self {
             Tree::Leaf => *self = Tree::singleton(input),
@@ -148,6 +165,55 @@ impl<A: Ord> Tree<A> {
                 let children_are_tree = left.is_tree_full() && right.is_tree_full();
                 is_sorted_left && is_sorted_right && children_are_tree
             }
+        }
+    }
+}
+
+pub struct View<'a, A>{
+    stack: Vec<&'a Tree<A>>,
+    tree: &'a Tree<A>,
+}
+impl<'a, A> View<'a, A> {
+    pub fn new(tree: &'a Tree<A>) -> Self {
+        View {
+            stack: Vec::new(),
+            tree: tree,
+        }
+    }
+
+    pub fn go_left(&mut self) -> bool {
+        match *self.tree {
+            Tree::Leaf => false,
+            Tree::Node(ref left, _, _) => {
+                self.stack.push(self.tree);
+                self.tree = left;
+                true
+            },
+        }
+    }
+    pub fn go_right(&mut self) -> bool {
+        match *self.tree {
+            Tree::Leaf => false,
+            Tree::Node(_, _, ref right) => {
+                self.stack.push(self.tree);
+                self.tree = right;
+                true
+            },
+        }
+    }
+    pub fn go_up(&mut self) -> bool {
+        match self.stack.pop() {
+            None => false,
+            Some(tree) => {
+                self.tree = tree;
+                true
+            },
+        }
+    }
+    pub fn value(&self) -> Option<&A> {
+        match *self.tree {
+            Tree::Leaf => None,
+            Tree::Node(_, ref value, _) => Some(value),
         }
     }
 }
