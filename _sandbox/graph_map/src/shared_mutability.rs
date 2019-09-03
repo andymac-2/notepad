@@ -1,4 +1,3 @@
-
 struct A<'c> {
     value: u32,
     child: &'c std::cell::RefCell<C>
