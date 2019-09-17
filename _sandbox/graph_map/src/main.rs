@@ -5,11 +5,11 @@ use uuid::Uuid;
 
 #[derive(Clone, Eq, PartialEq, Hash, Debug, PartialOrd, Ord)]
 pub struct Task {
-    name: String,
+    name: &'static str,
     duration: u32,
 }
 impl Task {
-    fn new (name: String, duration: u32) -> Self {
+    fn new (name: &'static str, duration: u32) -> Self {
         Task {
             name: name,
             duration: duration,
@@ -88,19 +88,6 @@ impl<T: Eq + Hash> Graph<T> {
     }
 }
 
-macro_rules! memoize {
-    ( $cache:expr, $key:expr, $body:expr ) => {
-        match $cache.get($key) {
-            Some(result) => result.clone(),
-            None => {
-                let result = $body;
-                $cache.insert($key.clone(), result);
-                result
-            }
-        }
-    }
-}
-
 struct GraphView<'a> {
     graph: &'a Graph<Task>,
     start_times: HashMap<Uuid, u32>,
@@ -115,35 +102,92 @@ impl<'a> GraphView<'a> {
         }
     }
     fn end_time(&mut self, key: &Uuid) -> u32 {
-        memoize!(self.end_times, key, {
-            self.graph.get(key).duration + self.start_time(key)
-        })
+        if let Some(result) = self.end_times.get(key) {
+            return result.clone();
+        }
+        
+        let result = self.graph.get(key).duration + self.start_time(key);
+
+        self.end_times.insert(key.clone(), result);
+        result
     }
     fn start_time(&mut self, key: &Uuid) -> u32 {
-        memoize!(self.start_times, key, {
-            self.graph.get_incoming(key)
-                .into_iter()
-                .map(|key_out| self.end_time(key_out))
-                .max()
-                .unwrap_or(0)
-        })
+        if let Some(result) = self.start_times.get(key) {
+            return result.clone();
+        }
+
+        let result = self.graph.get_incoming(key)
+            .into_iter()
+            .map(|key_out| self.end_time(key_out))
+            .max()
+            .unwrap_or(0);
+
+        self.start_times.insert(key.clone(), result);
+        result
+    }
+}
+
+struct GraphView2<'a> {
+    graph: &'a Graph<Task>,
+    start_times: HashMap<Uuid, Option<u32>>,
+    end_times: HashMap<Uuid, Option<u32>>,
+}
+impl<'a> GraphView2<'a> {
+    fn new (graph: &'a Graph<Task>) -> Self {
+        GraphView2 {
+            graph: graph,
+            start_times: HashMap::new(),
+            end_times: HashMap::new(),
+        }
+    }
+    fn end_time(&mut self, key: &Uuid) -> Option<u32> {
+        if let Some(result) = self.end_times.get(key) {
+            return result.clone();
+        }
+        self.end_times.insert(key.clone(), None);
+        
+        let result = self.start_time(key)
+            .map(|time| time + self.graph.get(key).duration);
+
+        self.end_times.insert(key.clone(), result);
+        result
+    }
+    fn start_time(&mut self, key: &Uuid) -> Option<u32> {
+        if let Some(result) = self.start_times.get(key) {
+            return result.clone();
+        }
+        self.start_times.insert(key.clone(), None);
+
+        let result = self.graph.get_incoming(key)
+            .into_iter()
+            .map(|key_out| self.end_time(key_out))
+            .fold(Some(0), |max_time, end_time| Some(max_time?.max(end_time?)));
+
+        self.start_times.insert(key.clone(), result);
+        result
     }
 }
 
 fn main() {
     let mut graph = Graph::new();
-    let n1 = graph.add_node(Task::new("Lay foundation".to_owned(), 1));
-    let n2 = graph.add_node(Task::new("Build walls".to_owned(), 2));
-    graph.add_edge(&n1, &n2);
-    let n3 = graph.add_node(Task::new("Build roof".to_owned(), 4));
-    graph.add_edge(&n2, &n3);
-    let n4 = graph.add_node(Task::new("Paint walls".to_owned(), 8));
-    graph.add_edge(&n2, &n4);
-    let n5 = graph.add_node(Task::new("Furnish house".to_owned(), 16));
-    graph.add_edge(&n4, &n5);
 
+    let lay_foundation = graph.add_node(Task::new("Lay foundation", 1));
+    let build_walls = graph.add_node(Task::new("Build walls", 2));
+    graph.add_edge(&lay_foundation, &build_walls);
 
-    println!("Hello, world!");
+    let build_roof = graph.add_node(Task::new("Build roof", 4));
+    graph.add_edge(&build_walls, &build_roof);
+
+    let paint_walls = graph.add_node(Task::new("Paint walls", 8));
+    graph.add_edge(&build_walls, &paint_walls);
+
+    let furnish_house = graph.add_node(Task::new("Furnish house", 16));
+    graph.add_edge(&paint_walls, &furnish_house);
+
+    graph.add_edge(&furnish_house, &build_walls);
+
+    let mut view = GraphView2::new(&graph);
+    println!("Days require to finish house: {:?}", view.end_time(&furnish_house));
 }
 
 mod test {
@@ -152,14 +196,14 @@ mod test {
     #[test]
     fn graph_view () {
         let mut graph = Graph::new();
-        let n1 = graph.add_node(Task::new("Lay foundation".to_owned(), 1));
-        let n2 = graph.add_node(Task::new("Build walls".to_owned(), 2));
+        let n1 = graph.add_node(Task::new("Lay foundation", 1));
+        let n2 = graph.add_node(Task::new("Build walls", 2));
         graph.add_edge(&n1, &n2);
-        let n3 = graph.add_node(Task::new("Build roof".to_owned(), 4));
+        let n3 = graph.add_node(Task::new("Build roof", 4));
         graph.add_edge(&n2, &n3);
-        let n4 = graph.add_node(Task::new("Paint walls".to_owned(), 8));
+        let n4 = graph.add_node(Task::new("Paint walls", 8));
         graph.add_edge(&n2, &n4);
-        let n5 = graph.add_node(Task::new("Furnish house".to_owned(), 16));
+        let n5 = graph.add_node(Task::new("Furnish house", 16));
         graph.add_edge(&n4, &n5);
 
         let mut view = GraphView::new(&graph);

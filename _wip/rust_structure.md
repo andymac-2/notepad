@@ -24,6 +24,8 @@ For the purposes of this article, we will use Rust, since it is a language with 
 
 As the name suggests, an invariant is something that never changes. For example, "The program works" should be an invariant of your program, if it isn't an invariant, either you, or your program has done something wrong. We can only rely on something being true if it's an invariant, and we can not rely on something being true if it isn't an invariant.
 
+The "this program works" invariant is going to depend on other invariants in your program. If you know that your program could sometimes violates it's invariants, then there is not guarantee that "this program works". As an every day programmer, you will not be expected to formally and mathematically prove that the invariants hold; however, it's usually sufficient to know that you *could* prove it if you wanted, and avoid circumstances where you *couldn't* prove it even if you wanted.
+
 For example, consider a binary tree. To keep things simple, this will not be a balanced tree:
 
 ```rust
@@ -121,11 +123,13 @@ In code we could write this as
 
 ```rust 
 pub fn insert (&mut self, input: A) {
-    // Here the tree should be sorted.
+    // At the beginning of the function, the tree should be sorted.
 
+    // Between the start and the end of the function, we may temporarily 
+    // break invariants
     *** Perform the actual insertion. ***
 
-    // Here the tree should also be sorted.
+    // At the end of the function, the tree should also be sorted.
 }
 ```
 
@@ -145,20 +149,88 @@ We notice that we actually *cannot* create a tree from outside this module that 
 
 If I cannot make an invalid tree from outside of this module, then the only place I can make an invalid tree is if I make a mistake *inside* the module. If any of my assertions fail, or my code has a bug that involves a malformed tree, I know exactly where in my code I have to look.
 
+In addition, we can also say that code outside the module has no responsibility to ensure that the invariants hold; it is purely the responsibility of code inside the module to ensure that the invariants are true at all times.
+
 Inside the module we can break the invariants, outside we can't. The boundary between the inside and the outside, we call the **interface**. We say that the tree is **encapsulated** because we have limited places where we can create incorrect code.
 
 ***img***
 
-If this sounds familiar to you, then you're right. Safe Rust already promises to uphold several invariants for you. Specifically, these are memory safety and freedom from data races. Code written in unsafe Rust can violate these invariants, and if these invariants are violated, the incorrect code must be inside an `unsafe` block.
+If this sounds familiar to you, then you're right. Safe Rust already promises to uphold several invariants for you. Specifically, these are memory safety, freedom from data races, and no undefined behaviour. Code written in unsafe Rust can violate these invariants. If these invariants are violated, we know that the offending code must be inside an `unsafe` block.
 
-Rust therefore provides encapsulation around `unsafe`. There is an area of code where we can't violate the invariants, there is an are of code where we can, and we make an attempt to minimise that area of code. Note that we don't actually need any objects to have encapsulation, just invariants.
+Rust therefore provides encapsulation around `unsafe`. There is an area of code where we can't violate the invariants, there is an are of code where we can, and we make an attempt to minimise that area of code. In addition, it is not the responsibility of code inside of a safe rust to check if code inside `unsafe` is correct.
+
+Note that we don't actually need any objects to have encapsulation, we just need invariants.
+
+## A quick note about Graphs
+
+A `struct` is comprised broadly of two different things: data that it references, and data that it owns. References are unidirectional: if `struct` A holds a reference to `struct` B, then `struct` B does not need to have a reference to `struct` A. The data of a Rust program is comprised of these `structs`.
+
+Broadly speaking, a data structure which is comprised of a number of individual components which are connected with unidirectional edges is called a directed graph. Therefore, if we can create an arbitrary directed graph data structure, then we should be able to create any data structure that we could create in Rust.
+
+## Trees
+
+Armed with knowledge about In the simplest case, Our data forms a tree, and has no cyclic references. Rust makes writing these kinds of structures easy. In this case, the root node owns all of it's direct children. The children own all of their direct children and so on and so forth. If you have the opportunity to structure your program this way, consider doing so.
+
+For any function that requires data from both the parent and the child, you can either make it a method of the parent, or you can pass the required data from the parent as an argument to the child. The following code shows a basic example of both variants:
+
+```rust
+struct Parent {
+    name: String,
+    child: Child,
+}
+struct Child {
+    name: String
+}
+impl Parent {
+    fn display_as_parent_method(&self) {
+        println!("parent's name: {}", self.name);
+        println!("child's name: {}", self.child.name);
+    }
+    fn display_by_passing_arguments(&self) {
+        self.child.display_with_parent_name(&self.name);
+    }
+}
+impl Child {
+    fn display_with_parent_name(&self, parent_name: &String) {
+        println!("parent's name: {}", parent_name);
+        println!("child's name: {}", self.name);
+    }
+}
+```
+
+You should pass data from the parent as arguments to the child when
+
+* You need the code to work if the child has a different type of parent, or no parent at all, or
+* You need to temporarily break the invariant of the child to perform the functionality required.
+
+You should make the method belong to the parent if
+
+* The method is specific to the parent/child combination, or
+* You don't need to temporarily break the invariants of the child.
+
+## Interlude: circular references.
+
+In the simplest case, consider a parent object and a child object. The parent object holds a reference to the child, and the child holds a reference to the parent. The parent depends on the child; if we were to modify the child, we may break the invariants of the parent. Similarly, the child depends on the parent; if we modify the parent, we may break the invariants of the child.
+
+***img***
+
+In this case, we may as well concede that we haven't really limited the area of code where we can break invariants. Every time I modify the child object, to know that my code works, I would have to check the implementation of the parent to make sure I haven't broken invariants and vice versa. If I haven't checked the implementation of the parent object each time I modify the child, then I can't tell that my code works.
+
+In this particular example, we concede that the parent and the child are strongly coupled. They should probably be made into a single object.
+
+## Trees (again)
+
+There is a special case of trees, where some children may have a reference to a parent.
+
+
+## General case: graphs.    
+
+
+
+
 
 
 ![A description of the image]({{ '/img/some_image.jpg' | relative_url}})
-
-Text body. 
-
-$$ math formula $$
 
 Copy from the notepad blog off github pages to medium/wordpress from chrome, it formats better (bolds code blocks).
 

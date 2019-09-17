@@ -15,7 +15,7 @@ fn fib_naive(arg: u32) -> u32 {
     }
 }
 
-// MONOLITHINC MEMOIZZTION
+// MONOLITHINC MEMOIZATION
 
 fn fib_memo (cache: &mut HashMap<u32, u32>, arg: u32) -> u32 {
     match cache.get(&arg).map(|entry| entry.clone()) {
