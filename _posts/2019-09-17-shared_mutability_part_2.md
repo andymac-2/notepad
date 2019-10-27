@@ -38,7 +38,7 @@ So now we have some idea of what an interface is. Let's talk about **encapsulati
 
 If the danger zone extends out forever and encompasses our entire program, then we always have to worry if we might break `A` by accident when we write code. We don't want to worry about breaking every other part of our program when we modify any other part. That's too much thinking. If we make the danger zone small, then we only have to worry about breaking `A` when we're inside it.
 
-We'll also introduce one more definition. The definition of a **reference**. Lets say we have two entities, a parent and a child. If you can break the parent by modifying the child or making it invalid, we say that the parent holds a reference to the child. We'll define a reference this way whether or not an entity holds a physical pointer to the other entity. I might get slack and say that an entity "knows about" another.
+We'll also introduce one more definition. The definition of a **reference**. Let's say we have two entities, a parent and a child. If you can break the parent by modifying the child or making it invalid, we say that the parent holds a reference to the child. We'll define a reference this way whether or not an entity holds a physical pointer to the other entity. I might get slack and say that an entity "knows about" another.
 
 In this article we will only deal with the case where there are no circular references.
 
@@ -56,7 +56,7 @@ We can now figure out the correct size for the interface for any entity using th
 
 * The danger zone for `A` contains `A` itself.
 * If an entity `A` knows about another entity `B`, then the danger zone for `A` includes the danger zone for `B`.
-* If an entity `A` does not know about another entity `B`, then `B` is outside the danger zone for `A` because `B` can't make `A` invalid by our definition of a reference.
+* If an entity `A` does not know about another entity `B`, then `B` is outside the danger zone for `A`, because `B` can't make `A` invalid by our definition of a reference.
 
 We have a problem with shared mutability. Consider two objects `A` and `B` which do not know about each other, but have a shared child called `C` that they both know about. The danger zone for `A` encompasses `A` and `C`, and the danger zone for `B` encompasses `B` and `C`. Because `A` and `B` don't know about each other, they don't belong in each other's danger zones. If it were possible that `B` could cause `A` to break, then it would imply that `A` knows about `B`: a contradiction.
 
@@ -66,7 +66,7 @@ Now we can see this issue. The interfaces of `A` and `B` cross over. In order to
 
 ## Example problem.
 
-For the purposes of this article we will look at a series of entities called **tasks**. Each **task** has a **duration** (in days) and a **name**. A **task** can only be completed after all of it's dependencies have been completed. A task with no dependencies starts straight away. For this article, We'll use the following example:
+For the purposes of this article we will look at a series of entities called **tasks**. Each **task** has a **duration** (in days) and a **name**. A **task** can only be completed after all of its dependencies have been completed. A task with no dependencies starts straight away. For this article, We'll use the following example:
 
 ![Untitled]({{ '/img/2019-09-17/20190903_150425.jpg' | relative_url}})
 
@@ -117,7 +117,7 @@ impl Task {
 }
 ```
 
-The start time of a `Task` is the maximum of all of it's children's end times. The end time is just the start time plus the duration of the task.
+The start time of a `Task` is the maximum of all of its children's end times. The end time is just the start time plus the duration of the task.
 
 As you can see, `start_time` accesses every dependency in turn to get a result. In our small example this will be trivial, but in more complicated graphs, we could perform an exponentially increasing number of calls. We are not allowed to cache the results, because some other part of our program could modify one of the other tasks, and make the start and end times invalid.
 
@@ -148,13 +148,13 @@ The previous example has shared mutability, but no "[internal consistency](https
 
 In order to create a place where only trusted entities can modify our nodes, we have to create an interface. Inside the interface, we have trusted code, and outside, we have everything else. We call the entity that holds the interface `P`.
 
-We don't allow `P` to hand out mutable references to individual nodes to the safe zone, because outside of `P` isn't trusted not to break our structure by our definition of `P`. `P` must therefore have exclusive write access to all of the individual nodes. Considering that `P` is an entity with an interface, that has exclusive write access to it's individual nodes, we can say `P` is an arena.
+We don't allow `P` to hand out mutable references to individual nodes to the safe zone, because outside of `P` isn't trusted not to break our structure by our definition of `P`. `P` must therefore have exclusive write access to all of the individual nodes. Considering that `P` is an entity with an interface, that has exclusive write access to its individual nodes, we can say `P` is an arena.
 
-You might note that I don't say that `P` an object. `P` could be anything. It could be a `struct`, and `enum`, a combination of objects or any other entity that could be defined. I only state that whatever `P` is, it happens to have two properties: all code inside `P` is trusted not to break it, and it has exclusive mutable access to all of it's nodes.
+You might note that I don't say that `P` an object. `P` could be anything. It could be a `struct`, and `enum`, a combination of objects or any other entity that could be defined. I only state that whatever `P` is, it happens to have two properties: all code inside `P` is trusted not to break it, and it has exclusive mutable access to all of its nodes.
 
 Like the previous article, in order to solve our shared mutability problem, we get rid of the sharing part, and say that all mutable access is through public functions for `P`.
 
-Note that in order to cache the results of calculations we *must* have an interface and it's associated entity `P`, and we know that `P` *must* have exclusive write access to it's members. An arena is not the "best" way of solving the problem of mutability with internal consistency, it's the *only* way. Einstein said to make things "as simple as possible, but no simpler". Although an arena may not be simple, it is the simplest way to write our code whilst remaining correct.
+Note that in order to cache the results of calculations we *must* have an interface and its associated entity `P`, and we know that `P` *must* have exclusive write access to its members. An arena is not the "best" way of solving the problem of mutability with internal consistency, it's the *only* way. Einstein said to make things "as simple as possible, but no simpler". Although an arena may not be simple, it is the simplest way to write our code whilst remaining correct.
 
 To implement this, we can create a `Graph` data structure which is just a collection of nodes with unique id's. A `GraphNode` contains some data, and a set of incoming and outgoing edges.
 
@@ -240,7 +240,7 @@ impl<T: Eq + Hash> Graph<T> {
 }
 ```
 
-We implement our actual `Task` struct which contains `name` and `duration` fields and nothing else. One of the advantages of using an arena is that we can separate the data that represents relations between nodes from the nodes themselves. This means that a node can therefore uphold it's own invariants that don't depend on it being part of a larger structure:
+We implement our actual `Task` struct which contains `name` and `duration` fields and nothing else. One of the advantages of using an arena is that we can separate the data that represents relations between nodes from the nodes themselves. This means that a node can therefore uphold its own invariants that don't depend on it being part of a larger structure:
 
 ```rust
 #[derive(Clone, Eq, PartialEq, Hash, Debug, PartialOrd, Ord)]
