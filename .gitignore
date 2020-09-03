@@ -4,3 +4,5 @@ Gemfile
 Gemfile.lock
 .DS_store
 *.out
+vendor/
+.bundle/config

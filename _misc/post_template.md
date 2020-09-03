@@ -15,6 +15,13 @@ Include this line if you want to have math formulas on the page.
 
 ![A description of the image]({{ '/img/some_image.jpg' | relative_url}})
 
+### Summary
+
+- Point 1
+- Point 2
+
+## First heading
+
 Text body. 
 
 $$ math formula $$
