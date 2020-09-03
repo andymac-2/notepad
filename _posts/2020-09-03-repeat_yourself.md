@@ -452,26 +452,26 @@ I won't talk much more about this topic as there appears to be a broad consensus
 
 ## Should I refactor my code?
 
-- I have two similar functions, should I refactor them into one?
+- **I have two similar functions, should I refactor them into one?**
     - If you can combine the two functions without weakening the postconditions, or strengthening the preconditions: then go ahead. If the function is too big, consider splitting it into parts.
-- I have two identical functions, should I refactor them into one?
+- **I have two identical functions, should I refactor them into one?**
     - Yes.
-- I have a function that I think could be refactored based on the above principles but it isn't duplicated anywhere, should I do it?
+- **I have a function that I think could be refactored based on the above principles but it isn't duplicated anywhere, should I do it?**
     - If you can weaken the preconditions, strengthen the postconditions, or if you think the function is too big, it should be OK to refactor. This assumes that any requirement could change anywhere in your program at any time.
-- I have a function that I think might be big enough that it can be split into parts, but it's borderline. Should I split it?
+- **I have a function that I think might be big enough that it can be split into parts, but it's borderline. Should I split it?**
     - The triviality of a function is subjective. If you think that it improves ergonomics, makes the code easier to read, or reduces the possibility of errors compared to writing it inline, do it.
-- I have a function that could be more generic, should I do it?
-    - If you don't weaken the postconditions in doing so, or make the function too big, then it should be fine. Caveat: sometimes the function already does it's job and you don't need it to be generic. Then it might not be worth the effort.
-- I have a function where the return type could be made more specific, should I do it?
+- **I have a function that could be more generic, should I do it?**
+    - If you don't weaken the postconditions in doing so, or make thefunction too big, then it should be fine. Caveat: sometimes the function already does it's job and you don't need it to be generic. Then it might not be worth the effort.
+- **I have a function where the return type could be made more specific, should I do it?**
     - If you don't weaken the preconditions, or make the function too big, then go ahead.
-- What about return type polymorphism? doesn't that make code more reusable while making the postconditions weaker?
+- **What about return type polymorphism? doesn't that make code more reusable while making the postconditions weaker?**
     - Return type polymorphism is equivalent to passing an (often zero sized) type as an argument, therefore weakening the preconditions. The three principles do not state whether or not this tradeoff is a good or a bad thing. Consider having both a specialized variant, and a generic one for different circumstances.
-- I have an object that might be too large, should I split it into two?
+- **I have an object that might be too large, should I split it into two?**
     - If at least one of the methods does not need access to the whole object, consider splitting it. Exception: delegation, getters/setters.
-- Is XXX is a good abstraction?
+- **Is XXX is a good abstraction?**
     - If you can define the preconditions, postconditions and invariants well, then it should be OK, otherwise: probably not.
-- Is XXX **object** a good abstraction?
-    - Examine the methods individually, and apply the principles above, If all of the methods individually are OK, then the whole object should be too assuming that you only access the object through its methods.
+- **Is XXX *object* a good abstraction?**
+    - Examine the methods individually, and apply the principles above, If all of the methods individually are OK, then the whole object should be too, assuming that you only access the object through its methods.
 
 
 ## Conclusion
