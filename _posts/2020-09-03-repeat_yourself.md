@@ -14,7 +14,7 @@ tags:
 ### Summary
 
 - "Don't repeat yourself" (DRY) is a widely accepted programming principle, but it has several limitations
-- An alternative derivation of DRY is presented that aims to alleviate some of these limitations
+- An alternative derivation of DRY is presented, that aims to alleviate some of these limitations
 - Programs are made up of functions, and to make functions maximally reusable they should
     - Have the most lenient preconditions
     - Have the most strict postconditions
@@ -75,7 +75,7 @@ function newBigFunc() {
 }
 ```
 
-Another argument against applying too much DRY is that overly generic code can be more difficult to understand and maintain. I'm a bit skeptical of how significant this really is, as 'Difficulty' is a very subjective concept and would vary from person to person. but I suppose there may be some truth to the claim that this negatively affects software development in some measurable capacity.
+Another argument against applying too much DRY is that overly generic code can be more difficult to understand and maintain. I'm a bit skeptical of how significant this really is, as 'Difficulty' is a very subjective concept and would vary from person to person, but I suppose there may be some truth to the claim that this negatively affects software development in some measurable capacity.
 
 In addition, I dispute the assertion that using DRY is necessarily faster to write. Copy and paste is quick, and I suspect that the vast majority of developer time is not spent actually typing in the first instance. In the case of modification, a global find and replace works for actually writing the code (and for copying over any relevant tests).
 
@@ -84,7 +84,7 @@ In addition, I dispute the assertion that using DRY is necessarily faster to wri
     <td> Obviously copy and paste, and global find and replace are not the recommended tools for refactoring a program, but the concept here is that writing the code itself is not the bottleneck.</td>
 </tr></table>
 
-To prove me wrong (or right) in this regard, someone would have to measure the time it takes to write out duplicated code versus non duplicated code, then show that there was a significant difference between them whilst proving that the difference wasn't just due to chance. I doubt that such a study will be done for some time.
+To prove me wrong (or right) in this regard, someone would have to measure the time it takes to write out duplicated code versus non duplicated code. Additionally, they would need to show that there was a significant difference between them whilst proving that the difference wasn't just due to chance. I doubt that such a study will be done for some time.
 
 ## From First Principles
 
@@ -100,7 +100,7 @@ In addition, I will assume that **the harder it is to prove a program correct, t
 
 <table><tr>
     <td width="64"><img src="{{ '/img/info_icon.png' | relative_url}}" alt="information" width="32" /></td>
-    <td> There's an implicit assumption that during the proving process, bugs can be fixed without adding or removing symbols, so in this way it makes sense to talk about an incorrect program whilst also talking about proving it correct.</td>
+    <td> There's an implicit assumption that during the proving process, bugs can be fixed without adding or removing symbols. In this way it makes sense to talk about an incorrect program whilst also talking about proving it correct.</td>
 </tr></table>
 
 In the biggest logical leap of this article, I will mention something something Curry-Howard, and state without much proof at all that the number of symbols required to prove a program correct is proportional to the number of symbols in the code itself. This is a huge assumption, and probably not at all correct in a lot of instances. However, it does give us a convenient proxy on the number of errors that are in a given piece of code: if the code is longer, or is more complex, then it has more errors.
@@ -112,13 +112,13 @@ In the biggest logical leap of this article, I will mention something something 
 
 So at least one way to reduce the number of errors in code will be to reduce the number of symbols in the code itself. This sounds a lot like DRY. Note that code that is *terse* does not fit the bill for having less errors, as it still contains the same number of symbols. In this way, naming, styling, and indentation are ignored.
 
-## My recommendation
+## My Recommendation
 
 Programs regardless of paradigm are made out of functions. Well, maybe not in some cases, but they must be made of *something*. And in order for a discussion about code reuse to be meaningful there must be *something* in a programming language that can be reused. I'll use "function" to mean the smallest reusable part of a program
 
 Perhaps to the chagrin of an Object Orientated programmer, I will specifically not talk about objects being reusable. Objects can have multiple methods or members, so if an object is reusable, then that means that there is something *smaller* that is reusable too.
 
-So if we consider a function to be the smallest reusable part of a program, then in order for our program to have the maximum reuse, any given function should
+So if we consider a function to be the smallest reusable part of a program, then in order for our program to have the maximum reuse, any given function should:
 
 - be **able** to be reused as much as possible, and
 - it should be as **useful** as possible, and
@@ -130,7 +130,7 @@ In order to achieve these goals respectively:
 - A function should have the largest set of postconditions
 - A function should perform the smallest non trivial amount of work
 
-## The smallest possible set of preconditions
+## The Smallest Possible Set of Preconditions
 
 A maximally reusable function should be able to be called wherever it is applicable. Functions can only be called when the caller can fulfill the preconditions of the function. If the caller cannot fulfill the preconditions of a function, but calls the function anyway, then this is an error.
 
@@ -179,14 +179,14 @@ The second examples are more reusable. This should be fairly obvious considering
 
 Although the above reasoning is agnostic regarding the programming paradigm used, those who are familiar with Object Orientated design idioms may find this familiar. Reducing the preconditions by making a function more generic corresponds to the 'I' and 'D' of SOLID. The 'Interface Segregation' principle recommends directly reducing the interface size, whilst the 'Dependency Inversion' principle recommends using interfaces in the first instance.
 
-Those that are familiar with functional programming may see that the second example has been universally quantified. If the type signature of the above example can be though of as a predicate in first order logic, then a universally quantified predicate is a stronger statement than an unquantified one.
+Those that are familiar with functional programming may see that the second example has been universally quantified. If the type signature of the above example can be thought of as a predicate in first order logic, then a universally quantified predicate is a stronger statement than an unquantified one.
 
 <table><tr>
     <th width="64"><img src="{{ '/img/info_icon.png' | relative_url}}" alt="information" width="32" /></th>
-    <th> Recommendation: Use best practice for your preferred programming paradigm</th>
+    <th> Recommendation: Use best practice for your preferred programming paradigm.</th>
 </tr></table>
 
-### Example 2: Unnecessary input
+### Example 2: Unnecessary Input
 
 Although making functions more generic will make them more reusable, it does not cover every use case. Most notably passing too much data into a function limits it's reuse. I use TypeScript in this example as it is usually easy to understand:
 
@@ -228,10 +228,10 @@ It should be possible to send a text message to any valid phone number, not just
 
 <table><tr>
     <th width="64"><img src="{{ '/img/info_icon.png' | relative_url}}" alt="information" width="32" /></th>
-    <th>Recommendation: pass the minimum required data into a function.</th>
+    <th>Recommendation: Pass the minimum required data into a function.</th>
 </tr></table>
 
-The larger the class is, the more unnecessary data will be passed to any given method. For example: if a class is responsible for two separate items, then methods which regard only the first item or only the second will be passed unnecessary state as part of `this`.
+The larger the class is, the more unnecessary data will be passed to any given method. For example: if a class is responsible for two separate items, then methods which regard only the first item, or only the second will be passed unnecessary state as part of `this`.
 
 Note that this ties back in with the 'S' of SOLID. The 'Single Responsibility' principle recommends breaking classes with many responsibilities into smaller classes.
 
@@ -247,11 +247,11 @@ Note that this ties back in with the 'S' of SOLID. The 'Single Responsibility' p
 - Making a function `async` when it doesn't need to be.
 - Using mutable references when immutable references would suffice.
 
-## The largest set of postconditions
+## The Largest Set of Postconditions
 
-In order for a function to be maximally reusable, it must be useful in as many places as possible. Each potential call site may place requirements on the result of the function, so it would make sense that the more strict the postconditions, the more places the function can satisfy the requirements of the call sites.
+In order for a function to be maximally reusable, it must be useful in as many places as possible. Each potential call site may place requirements on the result of the function. Therefore, it would make sense that the more strict the postconditions, the more places the function can satisfy the requirements of the call sites.
 
-### Example 1: Return the parent class
+### Example 1: Return the Parent Class
 
 In Object Orientated programming, a parent class can be used wherever a child class can be used, but not the other way around. To make the function as reusable as possible, return the parent class:
 
@@ -326,10 +326,10 @@ function abstractFactoryChild(): Child {
 
 <table><tr>
     <th width="64"><img src="{{ '/img/info_icon.png' | relative_url}}" alt="information" width="32" /></th>
-    <th> Recommendation: Return the most specific type possible</th>
+    <th> Recommendation: Return the most specific type possible.</th>
 </tr></table>
 
-### Example 2: Validating arguments
+### Example 2: Validating Arguments
 
 In the general case, throwing exceptions is a normal part of programming. Some things are just not in our control, so we just do the best we can, handle it and clean up the mess. If a function validates arguments and returns early on failure, then this indicates that the preconditions are too lenient:
 
@@ -364,9 +364,9 @@ function printNumber(argument: number): string {
 }
 ```
 
-Note that this is a bit controversial for two reasons: Firstly it gives stricter preconditions and stricter postconditions, when we would prefer stricter postconditions and more lenient preconditions. Secondly, argument checking code might end up being duplicated at a lot of call sites.
+Note that this is a bit controversial for two reasons. Firstly it gives stricter preconditions and stricter postconditions, when we would prefer stricter postconditions and more lenient preconditions. Secondly, argument checking code might end up being duplicated at a lot of call sites.
 
-Both of these problems can be fixed by creating a second function that only validates the arguments. Note here that in this toy example it doesn't really provide any benefits, but the benefit may become more obvious in larger examples.
+Both of these problems can be fixed by creating a second function that only validates the arguments. Note here, that in this toy example it doesn't really provide any benefits, but the benefit may become more obvious in larger examples.
 
 ```typescript
 function printNumberChecked(argument: number | null): string | null {
@@ -387,7 +387,7 @@ On one hand, the callers of `printNumber` do not have to check the return value 
 
 This is the first recommendation that states that something is specifically a *bad* abstraction. Not every abstraction will be a good one, so there should be rules for things that specifically shouldn't be done.
 
-#### Advanced usage for functional programs
+#### Advanced Usage for Functional Programs
 
 Note that for most languages `printNumberChecked` may not be that good an abstraction. It's not reusable enough and does some fairly trivial checking. I wouldn't stress if this appears in your code a lot. A functional programmer may notice that `T | null` is a functor, and `printNumberChecked` is a poorly written version of `map` or `fmap` specialized for `printNumber`:
 
@@ -422,9 +422,9 @@ console.assert(printNumberChecked(5) === '5');
     <th> Recommendation: Don't use a function with side effects when a pure function will do.</th>
 </tr></table>
 
-Note that this is generally not idiomatic code except for functional languages. I wouldn't use this unless you and all of you co-contributors are on the same page.
+Note that this is generally not idiomatic code except for functional languages. I wouldn't use this unless you, and all of you co-contributors are on the same page.
 
-## Perform the smallest amount of non-trivial work
+## Perform the Smallest Amount of Non-trivial Work
 
 In order for a program to actually realize the benefits of reusable code, the program must actually reuse it's components. Whilst the above principles will help determine what abstractions are good to take, this principle determines how they should be applied.
 
@@ -443,14 +443,14 @@ Either way, a function either contains duplicate code, contains preconditions th
 
 ### Examples
 
-I won't talk much more about this topic as there appears to be a broad consensus that smaller composable functions are better than larger ones for a number of reasons, and I'm not sure I can add much more than what is already available. I'll link to [NASA's ten rules](http://web.eecs.umich.edu/~imarkov/10rules.pdf) for safety critical software, which states that functions written in C should not have more than a single page's worth of code in them.
+I won't talk much more about this topic as there appears to be a broad consensus that smaller composable functions are better than larger ones. I'll link to [NASA's ten rules](http://web.eecs.umich.edu/~imarkov/10rules.pdf) for safety critical software, which states that functions written in C should not have more than a single page's worth of code in them.
 
 <table><tr>
     <th width="64"><img src="{{ '/img/info_icon.png' | relative_url}}" alt="information" width="32" /></th>
     <th> Recommendation: Break large functions into smaller ones.</th>
 </tr></table>
 
-## Should I refactor my code?
+## Should I Refactor my Code?
 
 - **I have two similar functions, should I refactor them into one?**
     - If you can combine the two functions without weakening the postconditions, or strengthening the preconditions: then go ahead. If the function is too big, consider splitting it into parts.
@@ -461,22 +461,22 @@ I won't talk much more about this topic as there appears to be a broad consensus
 - **I have a function that I think might be big enough that it can be split into parts, but it's borderline. Should I split it?**
     - The triviality of a function is subjective. If you think that it improves ergonomics, makes the code easier to read, or reduces the possibility of errors compared to writing it inline, do it.
 - **I have a function that could be more generic, should I do it?**
-    - If you don't weaken the postconditions in doing so, or make thefunction too big, then it should be fine. Caveat: sometimes the function already does it's job and you don't need it to be generic. Then it might not be worth the effort.
+    - If you don't weaken the postconditions in doing so, or make the function too big, then it should be fine. Caveat: sometimes the function already does it's job and you don't need it to be generic. Then it might not be worth the effort.
 - **I have a function where the return type could be made more specific, should I do it?**
     - If you don't weaken the preconditions, or make the function too big, then go ahead.
-- **What about return type polymorphism? doesn't that make code more reusable while making the postconditions weaker?**
-    - Return type polymorphism is equivalent to passing an (often zero sized) type as an argument, therefore weakening the preconditions. The three principles do not state whether or not this tradeoff is a good or a bad thing. Consider having both a specialized variant, and a generic one for different circumstances.
+- **What about return type polymorphism? Doesn't that make code more reusable while making the postconditions weaker?**
+    - Return type polymorphism is equivalent to passing an (often zero sized) type as an argument, therefore weakening the preconditions. The three principles do not state if this is a good or a bad thing. Consider having both a specialized variant, and a generic one for different circumstances.
 - **I have an object that might be too large, should I split it into two?**
     - If at least one of the methods does not need access to the whole object, consider splitting it. Exception: delegation, getters/setters.
 - **Is XXX is a good abstraction?**
-    - If you can define the preconditions, postconditions and invariants well, then it should be OK, otherwise: probably not.
+    - If you can define the preconditions, postconditions, and invariants well, then it should be OK, otherwise: probably not.
 - **Is XXX *object* a good abstraction?**
-    - Examine the methods individually, and apply the principles above, If all of the methods individually are OK, then the whole object should be too, assuming that you only access the object through its methods.
+    - Examine the methods individually, and apply the principles above. If all of the methods individually are OK, then the whole object should be too. This assumes that you only access the object through its methods.
 
 
 ## Conclusion
 
-DRY is a programming principle that has many limitations. An often cited limitation is the capacity of DRY to create inefficient abstractions. Heuristic solutions have been adopted to try to find a good medium. This article presents a different way of deriving DRY from some basic assumptions. It also provides three principles for writing abstractions that aim to be reusable. These three principles allow programmers to write code with no information about the calling context whilst providing some guarantees that the code can and will be reused as many times as possible.
+DRY is a programming principle that has many limitations. An often cited limitation is the capacity of DRY to create inefficient abstractions. Heuristic solutions have been adopted to try to find a good medium. This article presents a different way of deriving DRY from some basic assumptions. It also provides three principles for writing abstractions that aim to be reusable. This allows programmers to write code with no information about the calling context whilst providing some guarantees that the code can and will be reused as many times as possible.
 
 ---
 
