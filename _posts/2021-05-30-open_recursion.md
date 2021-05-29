@@ -1,5 +1,5 @@
 ---
-title: Inheritance Versus Open Recursion
+title: Understanding Open Recursion and Inheritance
 category: notes
 tags:
 - open recursion
@@ -12,16 +12,14 @@ tags:
 - java
 ---
 
-### Inheritance vs Open Recursion
-
 A very functional idea in object orientated programming.
-
-![A description of the image]({{ '/img/some_image.jpg' | relative_url}})
 
 ### Summary
 
-- Inheritance can be used to implement memoization using dynamic dispatch for example.
-- Dynamic dispatch can be desugared to continuation passing for those who want to emulate inheritance in functional languages.
+- Inheritance can be used to override methods.
+- This could be used to memoize a recursive function for example.
+- Dynamic dispatch can be desugared to continuation passing: a functional concept.
+- This style of continuation passing can be denoted as "Open Recursion" because the recursive calls are left open to be overidden.
 
 ## Memoization Using Inheritance
 
@@ -135,7 +133,7 @@ console.log(memoFib.call(10));
 console.log(memoFib.call(100)); // runs almost instantaneously
 ```
 
-We can also reverse the inheritance hierarchy so the function inherits from memoize. This will have slightly different performance characteristics:
+We can also reverse the inheritance hierarchy so the function inherits from memoize. This will have slightly different performance characteristics, but allow us to memoize any function we like:
 
 ```typescript
 class Memoize {
@@ -165,9 +163,9 @@ console.log(memoFib.call(10));
 console.log(memoFib.call(100));
 ```
 
-We could stop here, however, this method is severely limited. If `Memoize` inherits `Fib`, the memoize logic is limited to the fibonacci function, and we have to replicate it for every function we want to memoize. If `Fib` inherits `Memoize`, then we can't swap out the kind of memoization we want to use.
+We could stop here, however, this method is limited. If `Memoize` inherits `Fib`, the memoize logic is limited to the fibonacci function, and we have to replicate it for every function we want to memoize. If `Fib` inherits `Memoize`, then we can't swap out the kind of memoization we want to use.
 
-## This is an idea borrowed from functional programming
+## Overriding methods like this is called "Open Recursion"
 
 To see this, we need to make some changes to our code. In OOP, a method call `obj.method(arg)` desugars to `method(obj, arg)`. We can desugar the `Fib` class that way:
 
@@ -248,6 +246,8 @@ console.log(memoFib(memoFib, 10));
 console.log(memoFib(memoFib, 100));
 ```
 
+Passing a function to another function like this is denoted "continuation passing" in functional languages, which essentially means passing a callback function as an argument.
+
 We can perform a further simplification. Closures have access to themselves if we give them a name, so we shouldn't need to pass `self` to `self`. We can remove the `self` argument from `Fib` that way:
 
 ```typescript
@@ -317,10 +317,6 @@ console.log(memoFact(20));
 We see that `newMemo` is just a function that takes something that is memoizable and turns it into something callable. If I realize that my factorial function doesn't perform any better with memoization, I can swap out `newMemo` with something else as long as it turns my memoizable function into something callable:
 
 ```typescript
-const factorial: Memoizable<number, number> = (self, n) => {
-    return n === 0 ? 1 : self(n - 1) * n;
-}
-
 const newRecursive = <A, R>(baseClass: Memoizable<A, R>): Callable<A, R> => {
     const recursive = (arg: A): R => baseClass(recursive, arg);
     return recursive;
@@ -331,6 +327,10 @@ console.log(memoFact(20));
 ```
 
 Excellent. I can memoize any function that is memoizable, and I can swap out the kind of recursion I use. I no longer have any of the limitations of the inheritance version.
+
+If you look at the type signature of `Memoizable` versus `Callable`, we can now understand the difference between open and closed recursion. `Memoizable` functions are "Open" and `Callable` functions are "Closed". This is because `Memoizable` functions call themselves by argument, and `Callable` functions call themselves by name. Open recursion allows the caller to override the recursive call with whatever we want. In our case, we could override the recursive call with memoization.
+
+![Open versus closed recursion]({{ '/img/2021-05-30/openRecursion.png' | relative_url}})
 
 ## Conclusion
 
