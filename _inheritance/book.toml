@@ -1,0 +1,6 @@
+[book]
+authors = ["Andrew Pritchard"]
+language = "en"
+multilingual = false
+src = "src"
+title = "A Complete Guide To Inheritance In Rust"
