@@ -19,7 +19,7 @@ A very functional idea in object orientated programming.
 - Inheritance can be used to override methods.
 - This could be used to memoize a recursive function for example.
 - Dynamic dispatch can be desugared to continuation passing: a functional concept.
-- This style of continuation passing can be denoted as "Open Recursion" because the recursive calls are left open to be overidden.
+- This style of continuation passing can be denoted as "Open Recursion" because the recursive calls are left open to be overridden.
 
 ## Memoization Using Inheritance
 
@@ -86,7 +86,7 @@ const derived = new Derived();
 derived.method(); // crashes or runs indefinitely
 ```
 
-Say I have a recursive function that's particularly slow to execute, for example a naive implementation of the fibonacci sequence:
+Say I have a recursive function that's particularly slow to execute, for example a naive implementation of the Fibonacci sequence:
 
 ```typescript
 fib(n: number): number {
@@ -163,7 +163,7 @@ console.log(memoFib.call(10));
 console.log(memoFib.call(100));
 ```
 
-We could stop here, however, this method is limited. If `Memoize` inherits `Fib`, the memoize logic is limited to the fibonacci function, and we have to replicate it for every function we want to memoize. If `Fib` inherits `Memoize`, then we can't swap out the kind of memoization we want to use.
+We could stop here, however, this method is limited. If `Memoize` inherits `Fib`, the memoize logic is limited to the Fibonacci function, and we have to replicate it for every function we want to memoize. If `Fib` inherits `Memoize`, then we can't swap out the kind of memoization we want to use.
 
 ## Overriding methods like this is called "Open Recursion"
 
