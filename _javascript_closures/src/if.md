@@ -1,102 +1,97 @@
 # `if` statements
 
-A basic `if` statement usually goes something like this:
-
-```javascript
-if (condition) {
-    console.log("Yay!. The condition was true!");
-} else {
-    console.log("Oh, no. The condition was false.");
-}
-```
-
-...but I want it to look something like this:
-
-```javascript
-iff(condition, {
-    doThisIfTrue: () => console.log("Yay!. The condition was true!"),
-    doThisIfFalse: () => console.log("Oh, no. The condition was false.")
-})
-```
-
-...or even just this:
-
-```javascript
-iff(condition,
-    () => console.log("Yay!. The condition was true!"),
-    () => console.log("Oh, no. The condition was false.")
-);
-```
-
-Note that I don't have an implementation of `iff` just yet, I'm just trying to figure out what I want it to look like when I'm done. I use the name `iff` instead of `if` since `if` is a reserved word.
-
-## True and False
-
-Let's create two helper functions: `callTrue` and `callFalse`. They both take two arguments: `doThisIfTrue` and `doThisIfFalse`. `callTrue` will just ignore `doThisIfFalse` and call `doThisIfTrue`. `callFalse` will do the opposite:
-
-```javascript
-const callTrue = (doThisIfTrue, doThisIfFalse) => doThisIfTrue();
-const callFalse = (doThisIfTrue, doThisIfFalse) => doThisIfFalse();
-```
-
-We're almost there. I want my `iff` function to call `doThisIfTrue` when it receives true, and `doThisIfFalse` when it receives `false`. This isn't real javascript but it shows me what I want to do:
-
-```javascript
-iff(true, doThisIfTrue, doThisIfFalse) => callTrue(doThisIfTrue, doThisIfFalse);
-iff(false, doThisIfTrue, doThisIfFalse) => callFalse(doThisIfTrue, doThisIfFalse);
-```
-
-Hmm. I somehow need to convert `true` to `callTrue` and `false` to `callFalse`, and then my function works without any if statements. I don't think I can do that, but I can *rename* `callTrue` to `True` and `callFalse` to `False` and now my `iff` function works.
-
 ```typescript
-// Typescript
+// An `if` statement usually goes something like this:
+
+const normalIf = (condition: boolean) => {
+    if (condition) {
+        return "Condition was true";
+    } else {
+        return "Condition was false";
+    }
+};
+
+console.log(normalIf(true));    // "Condition was true"
+console.log(normalIf(false));   // "Condition was false"
+
+// Note that I use an else statement. This function returns a string, so I have to handle
+// the case where the condition is false.
+
+// Instead on an `if` statement, I need some kind of `if` function that will do the same
+// job. I use `otherwise` because `else` is a reserved word:
+
+const ifElse = <T>(
+    condition: boolean,
+    visitor: { then: () => T, otherwise: () => T }
+) => (
+    condition ? visitor.then() : visitor.otherwise()
+);
+
+// I can use the function like so:
+
+const ifFunction = (condition: boolean) => ifElse(condition, {
+    then: () => "Condition was true",
+    otherwise: () => "Condition was false"
+});
+
+console.log(ifFunction(true));    // "Condition was true"
+console.log(ifFunction(false));   // "Condition was false"
+
+// I still have to use booleans and the ternary operator for this to work. I can replace
+// the booleans however with two helper functions
+
 type Bool = <T>(trueBranch: () => T, falseBranch: () => T) => T;
 
 const True: Bool = (doThisIfTrue, doThisIfFalse) => doThisIfTrue();
 const False: Bool = (doThisIfTrue, doThisIfFalse) => doThisIfFalse();
 
-const iff = <T>(boolValue: Bool, doThisIfTrue: () => T, doThisIfFalse: () => T): T => 
-    boolValue(doThisIfTrue, doThisIfFalse);
+// now I can redefine my `ifElse` function:
 
-// prints "Yay!. The condition was true!"
-iff(True,
-    () => console.log("Yay!. The condition was true!"),
-    () => console.log("Oh, no. The condition was false.")
+const ifElse2 = <T>(
+    condition: Bool,
+    visitor: { then: () => T, otherwise: () => T }
+): T => (
+    condition(visitor.then, visitor.otherwise)
 );
 
-// prints "Oh, no. The condition was false."
-iff(False,
-    () => console.log("Yay!. The condition was true!"),
-    () => console.log("Oh, no. The condition was false.")
+// There are still some things that cannot be done without native booleans. For example,
+// the expression `a < b` will return a native boolean. For now, it's not possible to
+// compare two numbers without getting a native boolean. 
+
+// Variations:
+
+// I can omit the visitor, and pass `then` and `otherwise` directly as arguments:
+
+const ifElse3 = <T>(
+    bool: Bool,
+    then: () => T,
+    otherwise: () => T
+): T => (
+    bool(then, otherwise)
 );
-```
 
-So I have something that looks like an `if` statement and quacks like an `if` statement, therefore it must be an `if` statement. Now there are some pesky programmers that still use `true` and `false`, so I can write a quick conversion function:
-
-```typescript
-const toBoolean = (bool: boolean) => bool ? True : False;
-```
-
-In summary, if I don't use `true` and `false` directly, I can replace `if` statements and boolean values with nothing but functions:
-
-```typescript
-// before
-if(condition) {
-    console.log("Yay!. The condition was true!");
-} else {
-    console.log("Oh, no. The condition was false.");
-}
-
-//after
-iff(toBoolean(condition),
-    () => console.log("Yay!. The condition was true!"),
-    () => console.log("Oh, no. The condition was false.");
+const ifFunction2 = (condition: Bool) => ifElse3(condition,
+    () => "Condition was true",
+    () => "Condition was false"
 );
+
+console.log(ifFunction2(True));         // "Condition was true"
+console.log(ifFunction2(False));        // "Condition was false"
+
+// It's less verbose that way, but not as explicit.
+
+// The `ifElse3` function seems a bit useless: all it does is apply a function to it's arguments
+// You can use the boolean directly if you like
+
+const ifFunction3 = (bool: Bool) => bool(
+    () => "Condition was true",
+    () => "Condition was false"
+);
+
+console.log(ifFunction3(True));         // "Condition was true"
+console.log(ifFunction3(False));        // "Condition was false"
+
+// This is the most terse out of the examples and the least explicit. The threee variants are
+// similar enough that it boils down to personal preference which one you use.
+
 ```
-
-In fact, my version of `iff` has some benefits over the built in `if`:
-
-- `iff` is an expression, so the result can be assigned to a variable e.g.: `const result = iff(...)`.
-- `var` will not be hoisted to the surrounding context in an `iff` expression (not that you still use `var` anyway)
-
-*Note: an astute observer will notice that `return` and `throw` will not work the same way between the `if` and `iff`, however we will get to that later in the book*

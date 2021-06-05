@@ -28,7 +28,7 @@ type Def = <D, R>(definition: D, continuation: (arg: D) => R) => R;
 //   def(value, (variableName: type) =>
 //
 // Notice the unbalanced parenthesis. Theoretically these should all start on their
-// own level of indentation, but that's crazy.s
+// own level of indentation, but that's crazy.
 
 // Primitives
 // These are all things we cannot do with only closures
