@@ -1,15 +1,12 @@
 ---
+layout: post
 title: On Whatever the title is
-category: notes
 tags:
 - here
 - are
 - some
 - tags.
 ---
-
-Include this line if you want to have math formulas on the page.
-{% include math.html %}
 
 ### A brief description
 

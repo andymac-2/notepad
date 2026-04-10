@@ -1,5 +1,6 @@
 ---
 title: On Borrowing
+layout: post
 tags: 
 - Borrow Checker 
 - Rust 

@@ -1,7 +1,8 @@
 ---
 title: On Arithmetic
+layout: post
 ---
-{% include math.html %}
+
 ### It seems obvious that 2 + 2 ≠ 5...
 
 ![Or is it?]({{'/img/on_arithmetic.jpg' | relative_url }})

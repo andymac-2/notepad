@@ -1,5 +1,6 @@
 ---
 title: On Applicative Functors
+layout: post
 ---
 
 ### Rather than explain what an applicative is, we are only truly concerned with how to use them.

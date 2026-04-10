@@ -1,5 +1,6 @@
 ---
 title: Prove Santa Claus is real using Typescript
+layout: post
 category: notes
 tags:
 - typescript

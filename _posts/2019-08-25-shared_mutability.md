@@ -1,5 +1,6 @@
 ---
 title: Shared mutability in rust.
+layout: post
 category: notes
 tags:
 - Rust

@@ -1,5 +1,6 @@
 ---
 title: Understanding Open Recursion and Inheritance
+layout: post
 category: notes
 tags:
 - open recursion

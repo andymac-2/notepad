@@ -1,5 +1,6 @@
 ---
 title: "Shared mutability in Rust Part 2: Acyclic graphs"
+layout: post
 category: notes
 tags:
 - Rust

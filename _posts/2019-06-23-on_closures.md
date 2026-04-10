@@ -1,5 +1,6 @@
 ---
 title: Understanding closures, fn, Fn, FnMut and FnOnce.
+layout: post
 category: notes
 tags:
 - rust

@@ -1,5 +1,6 @@
 ---
 title: On Side Effects
+layout: post
 tags:
 - Monad
 - Haskell

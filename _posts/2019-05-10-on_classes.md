@@ -1,5 +1,6 @@
 ---
 title: On Invariants
+layout: post
 category: notes
 tags:
 - Rust

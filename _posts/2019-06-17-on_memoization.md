@@ -1,5 +1,6 @@
 ---
 title: On Memoization
+layout: post
 category: notes
 tags:
 - rust

@@ -1,5 +1,6 @@
 ---
 title: On Type Constraints
+layout: post
 category: notes
 tags:
 - Haskell

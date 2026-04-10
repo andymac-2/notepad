@@ -1,5 +1,6 @@
 ---
 title: Using switch is not an anti-pattern
+layout: post
 category: notes
 tags:
 - typescript

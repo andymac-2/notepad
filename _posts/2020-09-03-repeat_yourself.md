@@ -1,5 +1,6 @@
 ---
 title: DRY from first principles
+layout: post
 category: notes
 tags:
 - programming

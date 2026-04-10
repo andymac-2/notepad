@@ -1,5 +1,6 @@
 ---
 title: Easy persistent data structures in Rust
+layout: post
 category: notes
 tags:
 - Functional programming
