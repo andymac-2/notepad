@@ -1,6 +1,7 @@
 ---
 title: Portfolio
 category: portfolio
+layout: page
 tags:
 - Programming
 ---

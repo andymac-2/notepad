@@ -1,0 +1,10 @@
+[book]
+title = "PE algorithms"
+authors = ["Andrew Pritchard"]
+language = "en"
+
+[output.html]
+mathjax-support = true
+
+[output.html.playground]
+editable = true

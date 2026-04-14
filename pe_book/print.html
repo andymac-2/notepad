@@ -1,0 +1,973 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>PE algorithms</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-cc88ef1d.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-82b1d37e.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">PE algorithms</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Here are my notes for techniques for solving Project Euler problems. It is a continuous work in progress. I tend to update this when there is a technique that applies to more than one problem. I keep a list of candidate topics that I might write about in the future here:</p>
+<ul>
+<li>Seiving</li>
+<li>Modular arithmetic</li>
+<li>Dynamic Programming</li>
+<li>Lucy’s Algorithm</li>
+<li>Diophantine equations</li>
+<li>closed form solutions</li>
+<li>summing multiplicative functions</li>
+<li>groups, adjuncts, etc</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="gcd-and-extended-gcd-algorithms"><a class="header" href="#gcd-and-extended-gcd-algorithms">GCD and extended GCD algorithms</a></h1>
+<h2 id="greatest-common-divisor-gcd"><a class="header" href="#greatest-common-divisor-gcd">Greatest Common Divisor (gcd)</a></h2>
+<p>Say we have two integers \(a\) and \(b\), the gcd is the biggest number that cleanly divides both \(a\) and \(b\) without a remainder. That is, the gcd is the biggest number \(m\) such that \(a = mx\) and \(b = my\) for some \(x\) and \(y\). There is a simple algorithm to find this number:</p>
+<blockquote>
+<p>Subtract the smaller number from the bigger number until both numbers are equal. When they are equal, we have the gcd</p>
+</blockquote>
+<p>For example, if we want to find the gcd of 64 and 26:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Step</th><th>a</th><th>b</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>64</td><td>26</td></tr>
+<tr><td>2</td><td>38</td><td>26</td></tr>
+<tr><td>3</td><td>12</td><td>26</td></tr>
+<tr><td>4</td><td>12</td><td>14</td></tr>
+<tr><td>5</td><td>12</td><td>2</td></tr>
+<tr><td>6</td><td>10</td><td>2</td></tr>
+<tr><td>7</td><td>8</td><td>2</td></tr>
+<tr><td>8</td><td>6</td><td>2</td></tr>
+<tr><td>9</td><td>4</td><td>2</td></tr>
+<tr><td><strong>10</strong></td><td><strong>2</strong></td><td><strong>2</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p>So the gcd of 64 and 26 is 2. This is called the Euclidean algorithm. More information, and more efficient algorithms can be found <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">on Wikipedia</a></p>
+<p>When \(gcd(a, b) = 1\), then \(a\) and \(b\) are said to be <strong>coprime</strong>. that is, they have no factors in common.</p>
+<h2 id="optimising-the-gcd"><a class="header" href="#optimising-the-gcd">Optimising the GCD</a></h2>
+<p>If one number is much larger the other, then we spend a lot of time repeatedly subtracting it. Repeated subtraction is just division. What we are left with is the remainder. So instead of repeatedly subtracting one number from the other, we can take the remainder of one number from the other and save a lot of time:</p>
+<pre class="playground"><code class="language-rust editable">pub fn gcd(mut a: u32, mut b: u32) -&gt; u32 {
+    while a != 0 {
+        (a, b) = (b % a, a);
+    }
+
+    b
+}
+
+fn main() {
+    println!("gcd({}, {}) = {}", 64, 26, gcd(64, 26));
+}</code></pre>
+<h2 id="lowest-common-multiple-lcm"><a class="header" href="#lowest-common-multiple-lcm">Lowest Common Multiple (lcm)</a></h2>
+<p>The lowest common multiple is the smallest number that is a multiple of both \(a\) and \(b\). The lcm is equal to:</p>
+<p>\[\frac{ab}{gcd(a, b)}\]</p>
+<p>Say we want to find the smallest solution to the equation \(ax + by = 0\). Then we have:</p>
+<p>\[
+\begin{align*}
+a\frac{b}{gcd(a, b)} - b\frac{a}{gcd(a, b)} &amp;= 0 \\
+(x, y) = \left(\frac{b}{gcd(a, b)}, -\frac{a}{gcd(a, b)}\right)
+\end{align*}
+\]</p>
+<h1 id="bézouts-identity"><a class="header" href="#bézouts-identity">Bézout’s Identity</a></h1>
+<p>Let \(a\) and \(b\) be any two integers, then an important middle step for many problems is to find an \(x\) and \(y\) such that \(ax + by = gcd(a, b)\) This is called Bézout’s identity. We start with two equations:</p>
+<p>\[
+\begin{align*}
+1a + 0b &amp;= a \\
+0a + 1b &amp;= b
+\end{align*}
+\]</p>
+<p>At each step, just like the gcd, we subtract the larger equation from the smaller one until both are the same. Since we start with \(a\) and \(b\) just like the Euclidean algorithm, we will end up with the gcd at the end. Using 64 and 26 the same example as above:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Step</th><th>equation 1</th><th>equation 2</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>\(1a + 0b = 64\)</td><td>\(0a + 1b = 26\)</td></tr>
+<tr><td>2</td><td>\(1a - 1b = 38\)</td><td>\(0a + 1b = 26\)</td></tr>
+<tr><td>3</td><td>\(1a - 2b = 12\)</td><td>\(0a + 1b = 26\)</td></tr>
+<tr><td>4</td><td>\(1a - 2b = 12\)</td><td>\(-1a + 3b = 14\)</td></tr>
+<tr><td>5</td><td>\(1a - 2b = 12\)</td><td>\(-2a + 5b = 2\)</td></tr>
+<tr><td>6</td><td>\(3a - 7b = 10\)</td><td>\(-2a + 5b = 2\)</td></tr>
+<tr><td>7</td><td>\(5a - 12b = 8\)</td><td>\(-2a + 5b = 2\)</td></tr>
+<tr><td>8</td><td>\(7a - 17b = 6\)</td><td>\(-2a + 5b = 2\)</td></tr>
+<tr><td>9</td><td>\(9a - 22b = 4\)</td><td>\(-2a + 5b = 2\)</td></tr>
+<tr><td>10</td><td>\(11a - 27b = 2\)</td><td>\(-2a + 5b = 2\)</td></tr>
+</tbody>
+</table>
+</div>
+<p>So now we have two solutions to our equation: \(x = 11, y = -27\) and \(x = -2, y = 5\). This process is called the <strong>extended Euclidean algorithm</strong>. Using the gcd optimisation above, we get the following algorithm:</p>
+<pre class="playground"><code class="language-rust editable">// Solve ax + by = gcd(a, b). Returns (x, y, gcd(a, b))
+fn extended_gcd(mut a: i32, mut b: i32) -&gt; (i32, i32, i32) {
+    let (mut x_1, mut y_1, mut x_2, mut y_2) = (1, 0, 0, 1);
+
+    while a != 0 {
+        let quotient = b / a;
+        // subtract the first equation from the second and swap
+        (x_1, x_2) = (x_2 - x_1 * quotient, x_1);
+        (y_1, y_2) = (y_2 - y_1 * quotient, y_1);
+        (a, b) = (b % a, a);
+    }
+
+    (x_2, y_2, b)
+}
+
+fn main() {
+    let (x, y, gcd) = extended_gcd(64, 26);
+    println!("Solution: {} * 64 + {} * 26 = {}", x, y, gcd);
+}</code></pre>
+<p>We note that in the first column of the table above, the value of \(x\) always increases, whilst the value of \(y\) always decreases. The opposite is true for the second column. These solutions are somewhat special, the left column contains the smallest positive value of \(a\) that satisfies the identity, whilst the right hand column contains the smallest positive value of \(b\) that satisfies the identity.</p>
+<p>There are infinitely many other solutions that we can make by adding or subtracting zero to the above equation:</p>
+<p>\[
+\begin{align*}
+ax + by &amp;= 0 \\
+13a - 32b &amp;= 0 \tag*{from “lcm” section above} \\
+11a - 27b &amp;= 2 \tag*{from table above} \\
+(11a - 27b)  + (13a - 32b) &amp;= 2 \\
+24a - 59a &amp;= 2
+\end{align*}
+\]</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="chinese-remainder-theorem-crt"><a class="header" href="#chinese-remainder-theorem-crt">Chinese remainder theorem (CRT)</a></h1>
+<p>The Chinese remainder theorem states that if we have the solution to an equation modulo \(m_1\) and modulo \(m_2\), then we can find the solution modulo \(m_1m_2\). In other words, if we have two equations of the form:</p>
+<p>\[
+\begin{align*}
+x &amp;= a_1 \mod m_1 \\
+x &amp;= a_2 \mod m_2 \\
+\end{align*}
+\]</p>
+<p>then we can find \(x \mod m_1m_2\).</p>
+<h2 id="when-to-use-this"><a class="header" href="#when-to-use-this">When to use this</a></h2>
+<p>Often we can find the answer to an equation modulo some small prime, but it is difficult to find the full solution. In this case, we can calculate the answer modulo a series of small primes, and then combine the answers using CRT.</p>
+<p>Sometimes a question will directly require the use of CRT to find a solution.</p>
+<h2 id="calculating-a-crt-with-coprime-m_1-and-m_2"><a class="header" href="#calculating-a-crt-with-coprime-m_1-and-m_2">Calculating a CRT with coprime \(m_1\) and \(m_2\):</a></h2>
+<p>To start, we want to find a pair of numbers \(n_1\), \(n_2\) such that:</p>
+<p>\[
+\begin{align*}
+n_1 &amp;= 1 \mod m_1 \\
+&amp;= 0 \mod m_2 \\
+n_2 &amp;= 1 \mod m_2 \\
+&amp;= 0 \mod m_1
+\end{align*}
+\]</p>
+<p>Then \(a_1n_1 + a_2n_2\) will be a solution. To find \(n_1\) we can rearrange:</p>
+<p>\[
+\begin{align*}
+n_1 &amp;= 0 \mod m_2 \\
+&amp;= m_2k_2 \\
+&amp;= 1 \mod m_1 \\
+&amp;= 1 - m_1k_1 \\
+1 &amp;= m_2k_2 + m_1k_1 \\
+\end{align*}
+\]</p>
+<p>We can use <a href="#bézouts-identity">Bézout’s identity</a> to find a solution to \(1 = m_2k_2 + m_1k_1\) as long as \(m_1\) and \(m_2\) are coprime. In the case that they are not coprime, then we can make them coprime by dividing one of them by the gcd. In this case, solutions only exist if \(a_1 = a_2 \mod gcd(m_1,m_2)\)</p>
+<pre class="playground"><code class="language-rust editable">// solve ax + by = gcd(a, b). return (x, y, gcd(a, b))
+pub fn extended_gcd(a: i64, b: i64) -&gt; (i64, i64, i64) {
+    let mut r = (a, b);
+    let mut s = (1, 0);
+
+    while r.1 != 0 {
+        let quotient = r.0 / r.1;
+        r = (r.1, r.0 - quotient * r.1);
+        s = (s.1, s.0 - quotient * s.1);
+    }
+
+    (s.0, (r.0 - s.0 * a) / b, r.0)
+}
+
+// Returns x such that x % m_1 = a_1 and x % m_2 = a_2. Returns None if there are no solutions
+fn crt(a_1: i64, m_1: i64, mut a_2: i64, mut m_2: i64) -&gt; Option&lt;i64&gt; {
+    let (mut k_1, mut k_2, gcd) = extended_gcd(m_1, m_2);
+
+    if gcd &gt; 1 {
+        // No solution
+        if a_1 % gcd != a_2 % gcd {
+            return None;
+        }
+
+        m_2 = m_2 / gcd;
+        a_2 = a_2 % m_2;
+        (k_1, k_2, _) = extended_gcd(m_1, m_2);
+    }
+
+    Some((m_2 * k_2 * a_1 + m_1 * k_1 * a_2).rem_euclid(m_1 * m_2))
+}
+
+fn main() {
+    assert_eq!(crt(1, 2, 3, 5), Some(3));
+    assert_eq!(crt(1, 10, 0, 2), None);
+    assert_eq!(crt(6, 10, 1, 5), Some(6));
+
+    let result = crt(20, 23, 7, 11).unwrap();
+    assert_eq!(result % 11, 7);
+    assert_eq!(result % 23, 20);
+    assert!(result &lt; 11 * 23);
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="stern-brocot-tree"><a class="header" href="#stern-brocot-tree">Stern-Brocot Tree</a></h1>
+<p>The Stern-Brocot tree allows us to iterate over all fractions in a given range. It has a few main properties we care about:</p>
+<ul>
+<li>All fractions in the tree are fully reduced</li>
+<li>It will eventually iterate through all fractions</li>
+<li>Fractions with smaller denominators are higher in the tree</li>
+<li>Fractions in the tree are ordered from smallest to largest</li>
+</ul>
+<p>We start at \(\left(\frac{0}{1}\frac{1}{0}\right)\). For any given node \(\left(\frac{a}{c}\frac{b}{d}\right)\), the left child is given by \(\left(\frac{a}{c}\frac{a + b}{c + d}\right)\) and the right child is given by \(\left(\frac{a + b}{c + d}\frac{b}{d}\right)\)</p>
+<p>This can be implemented with relatively few lines of code:</p>
+<pre class="playground"><code class="language-rust editable">fn stern_brocot(left: (u64, u64), right: (u64, u64)) {
+    let mediant = (left.0 + right.0, left.1 + right.1);
+
+    // terminate if the denominator is greater than 3
+    if mediant.1 &gt; 3 {
+        return;
+    }
+
+    // terminate if the fraction increases past 2
+    if mediant.0 &gt; mediant.1 * 2 {
+        return;
+    }
+
+    stern_brocot(left, mediant);
+    println!("Visited fraction: {}/{}", mediant.0, mediant.1);
+    stern_brocot(mediant, right);
+}
+
+fn main() {
+    stern_brocot((0, 1), (1, 0));
+}</code></pre>
+<h2 id="best-approximation-of-anything"><a class="header" href="#best-approximation-of-anything">Best approximation of anything</a></h2>
+<p>The Stern-Brocot tree can be used to find the best approximation of anything with a fraction. Say we want to find the best approximation for \(\sqrt{13}\) where the denominator is less than \(1000\). As we go deeper into the tree, the denominators increase, and the upper and lower bounds become tighter. Once the denominator exceeds 1000, then we stop, since going down the tree will only make the denominator larger than it already is. The tree is ordered left to right, so we only need to check the branch that contains the number we want to approximate.</p>
+<pre class="playground"><code class="language-rust editable">fn distance((num, den): (u32, u32)) -&gt; f64 {
+    (num as f64 / den as f64 - 13.0_f64.sqrt()).abs()
+}
+
+fn best_approximation() -&gt; (u32, u32) {
+    let mut left = (0, 1);
+    let mut right = (1, 0);
+
+    loop {
+        let mediant = (left.0 + right.0, left.1 + right.1);
+
+        // Stop when the denominator is &gt; 1000
+        if mediant.1 &gt; 1000 {
+            if distance(left) &lt; distance(right) {
+                return left;
+            } else {
+                return right;
+            }
+        }
+
+        // If sqrt(13) is less than the mediant, go left, otherwise go right
+        if (mediant.0 * mediant.0) / (mediant.1 * mediant.1) &gt;= 13 {
+            right = mediant;
+        } else {
+            left = mediant;
+        }
+    }
+}
+
+fn main() {
+    let fraction = best_approximation();
+    println!("Best approximation for sqrt(13) is {}/{}", fraction.0, fraction.1);
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="pells-equation"><a class="header" href="#pells-equation">Pell’s Equation</a></h1>
+<p>We can solve basically every quadratic diophantine equation of two variables by reducing it to the Pell equation</p>
+<h2 id="solve-pells-equation"><a class="header" href="#solve-pells-equation">Solve Pell’s equation</a></h2>
+<p>Pell’s equation has the form \(x^2 - ny^2 = 1\) where \(n\) is a positive integer that is not a square<sup class="footnote-reference" id="fr-nonsquare-1"><a href="#footnote-nonsquare">1</a></sup>. It has a trivial solution \(x = \pm1, y = 0\), but our task is to find non trivial ones. Rearranging gives the following:</p>
+<p>\[
+\begin{align*}
+\sqrt{n + \frac{1}{y^2}} &amp;= \frac{x}{y}
+\end{align*}<br>\]</p>
+<p>Looking at this equation, we can see that as \(y\) increases, \(1/y^2\) decreases, and \(x/y\) becomes a better and better approximation for \(\sqrt{n}\).</p>
+<p>Probably the easiest way to solve this equation is to use the <a href="#stern-brocot-tree">Stern Brocot</a> tree<sup class="footnote-reference" id="fr-continuedFractions-1"><a href="#footnote-continuedFractions">2</a></sup>, which iterates through all reduced fractions in a range. Any solution \(x/y\) must be between \(\sqrt{n}\) and \(\sqrt{n + \frac{1}{y^2}}\) inclusive. We simply ignore branches outside this bound. As we progress down the tree \(y\) increases so the upper bound becomes closer and closer to \(\sqrt{n}\). We will find every solution because the Stern-Brocot tree iterates through every reduced fraction.</p>
+<pre class="playground"><code class="language-rust editable">use std::cmp::Ordering;
+
+fn find_pell_solutions(n: i64, left: (i64, i64), right: (i64, i64)) {
+    let mediant = (left.0 + right.0, left.1 + right.1);
+
+    // terminate if the denominator is greater than 100
+    if mediant.1 &gt; 1000 {
+        return;
+    }
+
+    if mediant.0.pow(2) == 1 + mediant.1.pow(2) * n {
+        println!("Found solution! {}^2 - {}*{}^2 = 1", mediant.0, n, mediant.1);
+    }
+
+    // if x/y &lt; sqrt(n), then the left branch of the tree is completely out of
+    // bounds
+    if mediant.0.pow(2) &gt; mediant.1.pow(2) * n {
+        find_pell_solutions(n, left, mediant);
+    }
+
+    // if x/y &gt; sqrt(n + 1/y^2), then the right branch of the tree is
+    // completely out of bounds
+    if mediant.0.pow(2) &lt; mediant.1.pow(2) * n + 1 {
+        find_pell_solutions(n, mediant, right);
+    }
+}
+
+fn main() {
+    // Find solutions for n = 2
+    find_pell_solutions(2, (0, 1), (1, 0));
+}</code></pre>
+<h2 id="a-non-recursive-solution"><a class="header" href="#a-non-recursive-solution">A non recursive solution</a></h2>
+<p>Recursive functions can be refactored to use a loop if you manage the stack yourself:</p>
+<pre class="playground"><code class="language-rust editable">fn find_pell_solutions(n: i64) {
+    let mut stack: Vec&lt;((i64, i64), (i64, i64))&gt; = vec![((0, 1), (1, 0))];
+
+    while let Some((left, right)) = stack.pop() {
+        let mediant = (left.0 + right.0, left.1 + right.1);
+
+        if mediant.1 &gt; 1000 {
+            continue;
+        }
+
+        if mediant.0.pow(2) == 1 + mediant.1.pow(2) * n {
+            println!("Found solution! {}^2 - {}*{}^2 = 1", mediant.0, n, mediant.1);
+        }
+
+        if mediant.0.pow(2) &gt; mediant.1.pow(2) * n {
+            stack.push((left, mediant));
+        }
+
+        if mediant.0.pow(2) &lt; mediant.1.pow(2) * n + 1 {
+            stack.push((mediant, right));
+        }
+    }
+}
+
+fn main() {
+    find_pell_solutions(2);
+}</code></pre>
+<h2 id="negative-pell-equation"><a class="header" href="#negative-pell-equation">Negative pell equation</a></h2>
+<p>The negative pell equation has the form \(x^2 - ny^2 = -1\) we rearrange to get</p>
+<p>\[
+\begin{align*}
+\sqrt{n - \frac{1}{y^2}} &amp;= \frac{x}{y}
+\end{align*}<br>\]</p>
+<p>\(x/y\) is between \(\sqrt{n - \frac{1}{y^2}}\) and \(\sqrt{n}\), and we can use the Stern-Brocot tree again:</p>
+<pre class="playground"><code class="language-rust editable">fn find_pell_solutions(n: i64, left: (i64, i64), right: (i64, i64)) {
+    let mediant = (left.0 + right.0, left.1 + right.1);
+
+    if mediant.1 &gt; 1000 {
+        return;
+    }
+
+    if mediant.0.pow(2) + 1 == mediant.1.pow(2) * n {
+        println!("Found solution! {}^2 - {}*{}^2 = 1", mediant.0, n, mediant.1);
+    }
+
+    // if x/y &lt; sqrt(n - 1/y^2), then the left branch of the tree is completely
+    // out of bounds
+    if mediant.0.pow(2) + 1 &gt; mediant.1.pow(2) * n {
+        find_pell_solutions(n, left, mediant);
+    }
+
+    // if x/y &gt; sqrt(n), then the right branch of the tree is completely out of
+    // bounds
+    if mediant.0.pow(2) &lt; mediant.1.pow(2) * n {
+        find_pell_solutions(n, mediant, right);
+    }
+}
+
+fn main() {
+    find_pell_solutions(2, (0, 1), (1, 0));
+}</code></pre>
+<h2 id="generalised-pell-equation"><a class="header" href="#generalised-pell-equation">Generalised pell equation</a></h2>
+<p>The generalised pell equation has the form \(x^2 - ny^2 = a\) we rearrange to get</p>
+<p>\[
+\begin{align*}
+\sqrt{n - \frac{a}{y^2}} &amp;= \frac{x}{y}
+\end{align*}<br>\]</p>
+<p>\(x/y\) is between \(\sqrt{n - \frac{a}{y^2}}\) and \(\sqrt{n}\), and we can solve it like the others.</p>
+<h2 id="an-aside-solving-x2---n2y2--a"><a class="header" href="#an-aside-solving-x2---n2y2--a">An aside: solving \(x^2 - n^2y^2 = a\)</a></h2>
+<p>What happens when \(n\) is a square in the generalised Pell equation? Then we have \(x^2 - (ny)^2 = a\), which is a difference of squares. Factorising gives:</p>
+<p>\[
+a = (x - ny)(x + ny)
+\]</p>
+<p>We can solve this equation by factorising \(a = pq\). Suppose \(p = x + ny\) and \(q = x - ny\), then we get the following:</p>
+<p>\[
+x = \frac{p + q}{2}, y = \frac{p - q}{2n}
+\]</p>
+<p>A simple algorithm is to factorise \(a\) to find candidates for \(x\) and \(y\). Then filter out all solutions where \(x\) and \(y\) are fractions.</p>
+<h2 id="solve-ax2--bx--c--dy2"><a class="header" href="#solve-ax2--bx--c--dy2">Solve \(ax^2 + bx + c = dy^2\)</a></h2>
+<p>We apply the quadratic equation directly which gives:</p>
+<p>\[
+x = \frac{-b \pm \sqrt{b^2 - 4a(c - dy^2)}}{2a}
+\]</p>
+<p>We note that \(x\) is only rational if the part under the square root is a square. Expanding gives:</p>
+<p>\[
+\begin{align*}
+z^2 &amp;= b^2 - 4a(c - dy^2) \\
+z^2 -4ady^2 &amp;= b^2 - 4ac \\
+z^2 -Ny^2 &amp;= A
+\end{align*}
+\]</p>
+<p>Now we can solve it using any technique for the generalised Pell equation. If \(N\) is a square, we can <a href="#an-aside-solving-x2---n2y2--a">solve using factorisation instead</a> Once we have solutions, we can substitute back to get \(x\), filtering out any solutions where \(x\) is a fraction.</p>
+<h2 id="generalised-quadratic-diophantine-equations"><a class="header" href="#generalised-quadratic-diophantine-equations">Generalised quadratic diophantine equations</a></h2>
+<p>Say we have a diophantine equation for which we want to find integer solutions for \(x, y\):</p>
+<p>\[ax^2 + bxy + cy^2 + dx + ey + f = 0\]</p>
+<p>We apply the quadratic equation directly to solve for \(y\):</p>
+<p>\[
+y = \frac{-(bx + e) \pm \sqrt{(bx + e)^2 - 4c(ax^2 + dx + f)}}{2c}
+\]</p>
+<p>We note that \(y\) is only rational if the part under the square root is a square. Expanding gives:</p>
+<p>\[
+\begin{align*}
+z^2 &amp;= (bx + e)^2 - 4c(ax^2 + dx + f) \\
+&amp;= (b^2 + 4ac)x^2 + (2be -4cd)x + (e^2 - 4cf) \\
+&amp;= Ax^2 + Bx + C
+\end{align*}
+\]</p>
+<p>And now we can solve it using <a href="#solve-ax2--bx--c--dy2">the technique above</a>. Once we have candidate solutions, filter out any solutions where \(y\) is a fraction.</p>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-nonsquare">
+<p>If \(n\) is a square, then we have \(x^2 - m^2y^2 = 1\). This is a difference of squares. The only solutions are the trivial solutions \(x = \pm1, y = 0\). <a href="#fr-nonsquare-1">↩</a></p>
+</li>
+<li id="footnote-continuedFractions">
+<p>Most literature online says that we can find a solution using continued fractions, however finding good guidance or working code online is surprisingly hard. <a href="https://web.archive.org/web/20150216094231/http://www.jpr2718.org/pell.pdf"><em>Solving the generalized Pell equation</em> by John P. Robertson</a> is a good resource that is terse, but comprehensive. <a href="#fr-continuedFractions-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="lucys-algorithm"><a class="header" href="#lucys-algorithm">Lucy’s algorithm</a></h1>
+<p>Lucy’s algorithm can help us find sums of multiplicative functions. I will discuss several variants in this article</p>
+<h2 id="not-quite-lucy-algorithm"><a class="header" href="#not-quite-lucy-algorithm">Not Quite Lucy Algorithm</a></h2>
+<p>Say we have the following problem:</p>
+<ul>
+<li>We have a function \(f(n)\)</li>
+<li>\(f(n)\) is <strong>completely multiplicative</strong>, i.e, \(f(1) = 1$ and $f(a)f(b) = f(ab)\)</li>
+<li>We have an easy way to calculate \(F(l) = \sum_{n=1}^{l}{f(n)}\)</li>
+<li>We want to find the sum of \(f(p)\) for every prime \(p\) less than a limit \(l\)</li>
+</ul>
+<p>Then we can use Lucy’s algorithm to calculate that sum.</p>
+<p>We denote \(lpf(n)\) as the <strong>l</strong>owest <strong>p</strong>rime <strong>f</strong>actor of \(n\). We define the function \(S(l, p)\) as the sum of all \(f(n)\) less than or equal to \(l\) where the lowest prime factor of \(n\) is greater than \(p\).<sup class="footnote-reference" id="fr-nonStandardS-1"><a href="#footnote-nonStandardS">1</a></sup></p>
+<p>We note that \(S(l, \lfloor \sqrt{l} \rfloor)\) is the sum of \(f(n)\) for all primes between \(\sqrt{l}\) and \(l\). \(1\) is also included in this sum, so we will need to subtract that out near the end.</p>
+<p>The set of \(n\) with \(lpf(n)\) greater than \(p\) is set of \(n\) with \(lpf(n)\) greater than \(p - 1\) minus the set of \(n\) with \(lpf(n)\) exactly equal to \(p\). We can write this as follows:</p>
+<p>\[S(l, p) = S(l, p - 1) - f(p) \cdot S(\lfloor l/p \rfloor, p - 1)\]</p>
+<p>This formula relies on \(f(n)\) being completely multiplicative. We also note that in order for the lowest prime factor to be exactly \(p\), \(p\) must be a prime. If \(p\) is composite, \(S(\lfloor l/p \rfloor, p - 1)\) is zero. This gives us a recursive way to find \(S(l, p)\). The base case is \(S(l, 1) = F(l)\).</p>
+<p>This is just enough information to write code for the algorithm. In this example, \(f(n) = 1\), which will allow us to count the number of primes less than or equal to \(l\):</p>
+<pre class="playground"><code class="language-rust editable">use std::collections::{HashMap, HashSet};
+
+fn capital_s(
+    cache: &amp;mut HashMap&lt;(u64, u64), u64&gt;,
+    primes: &amp;HashSet&lt;u64&gt;,
+    l: u64,
+    p: u64)
+-&gt; u64 {
+    if let Some(result) = cache.get(&amp;(l, p)) {
+        return *result;
+    }
+
+    if p &lt;= 1 {
+        // return sum of f(n) for all n
+        l
+    } else if p &gt;= l {
+        // smallest prime factor is greater than limit, return 0
+        1
+    } else if !primes.contains(&amp;p) {
+        // p is composite, keep going
+        capital_s(cache, primes, l, p - 1)
+    } else {
+        // normal recursive case
+        let result = capital_s(cache, primes, l, p - 1) - capital_s(cache, primes, l / p, p - 1);
+        cache.insert((l, p), result);
+        result
+    }
+}
+
+fn main() {
+    let l = 1000;
+    // Find these primes using a sieve
+    let mut small_primes = HashSet::from([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]);
+    let mut cache = HashMap::new();
+    let result = capital_s(&amp;mut cache, &amp;small_primes, l, 31) + small_primes.into_iter().count() as u64 - 1;
+
+    println!("There are {} primes less than or equal to {}", result, l);
+}</code></pre>
+<h2 id="multiplicative-lucy"><a class="header" href="#multiplicative-lucy">Multiplicative Lucy</a></h2>
+<p>\[\begin{align*}
+S(l, p) &amp;= \sum_{\substack{n \leq l \\ lpf(n) &gt; p}}{f(n)} \\
+&amp;= \sum_{\substack{n \leq l\\lpf(n) &gt; p - 1}}{f(n)} - \sum_{\substack{n \leq l\\lpf(n) = p}}{f(n)}\\
+&amp;= S(l, p - 1) - \sum_{\substack{pn \leq l \\ lpf(n) &gt; p - 1}}{f(pn)} \\
+&amp;= S(l, p - 1) - \left(\sum_{\substack{pn \leq l \\ lpf(n) &gt; p - 1  \\ p \nmid n}}{f(pn)} + \sum_{\substack{pn \leq l \\ lpf(n) &gt; p - 1 \\ p \mid n}}{f(pn)} \right)\\
+&amp;= S(l, p - 1) - \left(f(p)\sum_{\substack{n \leq \lfloor l/p \rfloor \\ lpf(n) &gt; p}}{f(n)} + \sum_{\substack{p^2n \leq l \\ lpf(n) &gt; p - 1}}{f(p^2n)} \right)\\
+&amp;= S(l, p - 1) - \left(f(p)S(\lfloor l / p \rfloor, p) + f(p^2)S(\lfloor l/p^2 \rfloor, p) + … \right)\\
+&amp;= S(l, p - 1) - \sum_{n \geq 1}{f(p^n)S(\lfloor l / p^n \rfloor, p)}\\
+\end{align*}
+\]</p>
+<hr>
+<p>We denote \(lpf(n)\) as the <strong>l</strong>owest <strong>p</strong>rime <strong>f</strong>actor of \(n\). We define the function \(S(l, p)\) as the sum of all \(f(n)\) less than or equal to \(l\) where the lowest prime factor of \(n\) is greater than \(p\).<sup class="footnote-reference" id="fr-nonStandardS-2"><a href="#footnote-nonStandardS">1</a></sup></p>
+<p>\[S(l, p) = \sum_{\substack{n \leq l \\ lpf(n) &gt; p}}{f(n)}\]</p>
+<p>We note that for any composite less than \(l\) the lowest prime factor is always smaller than \(\sqrt{l}\). Therefore, any number between \(\sqrt{l}\) and \(l\) that has a lowest prime factor greater than \(\sqrt{l}\) must be prime. Another way of writing this is as follows:</p>
+<p>\[S(l, \lfloor \sqrt{l}\rfloor) = \sum_{n\in \mathbb{P},\ \lfloor \sqrt{l}\rfloor&lt;n\leq l} n\]</p>
+<p>So we can sum all primes less than \(l\) by calculating \(S(l, \lfloor \sqrt{l}\rfloor)\), and then adding the primes below \(\sqrt{l}\). We can find these small primes with a simpler method such as the sieve of Eratosthenes.</p>
+<p>We want to calculate \(S(l, p)\) Recursively. The base case is \(S(l, 1)\) which we can calculate easily:</p>
+<p>\[
+\begin{align*}
+S(l, 1) &amp;= \sum_{n \leq l}{n} \\
+&amp;= \frac{n(n + 1)}{2}
+\end{align*}
+\]</p>
+<p>\(S(l, p)\) has the following recurrence relation<sup class="footnote-reference" id="fr-recurrenceRelation-1"><a href="#footnote-recurrenceRelation">2</a></sup> which is all the information we need to get started:</p>
+<p>\[
+\begin{align*}
+S(l, p) &amp;= S(l, p - 1) - p \cdot S(\lfloor l/p \rfloor, p - 1)
+\end{align*}
+\]</p>
+<p>We also note that when \(p\) is composite then \(S(l, p) = S(l, p - 1)\), because it is impossible to have a lowest prime factor equal to a composite.</p>
+<p>We can write an algorithm as follows:</p>
+<ul>
+<li>Calculate</li>
+</ul>
+<hr>
+<ol class="footnote-definition">
+<li id="footnote-nonStandardS">
+<p>This is not the usual definition of \(S\) that you find for lucy’s algorithm, but it simplifies the recursive formulas a lot, which is why I use it. <a href="#fr-nonStandardS-1">↩</a> <a href="#fr-nonStandardS-2">↩2</a></p>
+</li>
+<li id="footnote-recurrenceRelation">
+<p>The recurrence relation is proved as follows: \[\begin{align*}
+S(l, p) &amp;= \sum_{\substack{n \leq l\\lpf(n) &gt; p - 1}}{n} - \sum_{\substack{n \leq l\\lpf(n) = p}}{n}\\
+&amp;= S(l, p - 1) - \sum_{\substack{pn \leq l \\ lpf(n) &gt; p - 1}}{pn} \\
+&amp;= S(l, p - 1) - p\sum_{\substack{n \leq \lfloor l/p \rfloor \\ lpf(n) &gt; p - 1}}{n} \\
+&amp;= S(l, p - 1) - p \cdot S(\lfloor l/p \rfloor, p - 1)
+\end{align*}
+\] <a href="#fr-recurrenceRelation-1">↩</a></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="principle-of-inclusion-exclusion"><a href="#principle-of-inclusion-exclusion" class="header">Principle of Inclusion Exclusion</a></h1>
+<h2 id="mobius-inversion"><a class="header" href="#mobius-inversion">Mobius inversion</a></h2>
+<p>Say we have the following problem:</p>
+<ul>
+<li>We have two related functions \(f\) and \(g\) such that
+\[
+\begin{align*}
+g(1) &amp;= f(1) + f(2) + f(3) … \\
+g(2) &amp;= f(2) + f(4) + f(6) … \\
+g(3) &amp;= f(3) + f(6) + f(9) … \\
+\vdots \\
+g(n) &amp;= \sum_{m = 1}^{\infty}f(mn)
+\end{align*}<br>\]</li>
+<li>We want to calculate \(f(1)\)</li>
+<li>We have a good way to find \(g(n)\) but no easy way to find \(f(n)\)</li>
+</ul>
+<p>Then we can use a technique called Mobius inversion.</p>
+<p>We start with a simpler problem. Let’s say we want to calculate the sum of all \(f(n)\) when \(n\) is divisible by \(2\) or \(3\). We can calculate this using \(g(2) + g(3) - g(6)\). We subtract \(g(6)\) because we counted the multiples of \(6\) twice.</p>
+<p>Say we add another prime and we want to find the sum of all \(f(n)\) when \(n\) is divisible by \(2, 3\) or \(5\). Then we can calculate this with \(g(2) + g(3) + g(5) - g(6) - g(10) - g(15) + g(30)\). We subtract \(g(6), g(10)\) and \(g(15)\) because we counted them twice. We add \(g(30)\) because we add it three times for \(g(2), g(3)\) and \(g(5)\) and then subtract it three times for \(g(6), g(10)\) and \(g(15)\). This leaves us counting it zero times, so we have to add it back.</p>
+<p>Adding more primes we can see a pattern emerge:</p>
+<ul>
+<li>Add all \(g(n)\) when \(n\) is divisible by any prime</li>
+<li>Subtract all \(g(n)\) when \(n\) is divisible by at least two primes</li>
+<li>Add all \(g(n)\) when \(n\) is divisible by at least three primes</li>
+<li>Subtract all \(g(n)\) when \(n\) is divisible by at least four primes</li>
+<li>And so on</li>
+</ul>
+<p>To simplify the process we can introduce the Mobius function \(\mu(n)\) which allows us to know when to add or subtract a value of \(g(n)\). It has the following definition:</p>
+<p>\[
+\mu(n) =
+\begin{cases}
+-1 &amp; \text{if n is the product of an odd number of distinct primes} \\
+1 &amp; \text{if n is the product of an even number of distinct primes} \\
+0 &amp; \text{otherwise} \\
+\end{cases}
+\]</p>
+<p>Knowing this, we can calculate \(f(1)\) using \(g(1)\) and then subtracting all the multiples of \(3, 5, 7, 11 …\) until we are left with just \(f(1)\). We assume that \(f(n) = 0\) when \(n\) is larger than some big number. The final expression for \(f(1)\) is as follows:</p>
+<p>\[\boxed{f(1) = \mu(1)g(1) + \mu(2)g(2) + \mu(3)g(3) … = \sum_{m = 1}^{\infty}\mu(m)g(m)}\]</p>
+<h2 id="variations"><a class="header" href="#variations">Variations</a></h2>
+<p>We can usually define some \(g’(x)\) and \(f’(x)\) to solve a range of related problems. Here are some common examples, but other substitutions also work.</p>
+<h3 id="calculate-fa"><a class="header" href="#calculate-fa">Calculate \(f(a)\)</a></h3>
+<p>Say you want to calculate \(f(a)\) instead of \(f(1)\). Then define \(f’(m) = f(ma)\) and \(g’(m) = g(ma)\) then we have \(g’(n) = \sum_{m = 1}^{\infty}f’(mn)\) which is our original problem. Solving and substituting back gives the general solution:</p>
+<p>\[f(n) = \sum_{m = 1}^{\infty}\mu(m)g(mn)\]</p>
+<h3 id="calculate-fn-where-gn--sum_m--1inftyfleftleftlfloorfracnmnrightrfloorright"><a class="header" href="#calculate-fn-where-gn--sum_m--1inftyfleftleftlfloorfracnmnrightrfloorright">Calculate \(f(N)\) where \(g(n) = \sum_{m = 1}^{\infty}f\left(\left\lfloor\frac{N}{mn}\right\rfloor\right)\)</a></h3>
+<p>We define \(f’(x) = f\left(\left\lfloor\frac{N}{x}\right\rfloor\right)\). Then we have \(g(n) = \sum_{m = 1}^{\infty}f’(mn)\) which is our original problem. Solving and substituting back gives the solution:</p>
+<p>\[f(N) = \sum_{m = 1}^{\infty}\mu(m)g(m)\]</p>
+<p>This also works similarly for other scenarios, such as \(g(n) = \sum_{m = 1}^{\infty}f\left(\frac{N}{mn}\right)\)</p>
+<h3 id="calculate-fn-where-gn--sum_m--1inftyfleftleftlfloorfracnmrightrfloorright"><a class="header" href="#calculate-fn-where-gn--sum_m--1inftyfleftleftlfloorfracnmrightrfloorright">Calculate \(f(N)\) where \(g(n) = \sum_{m = 1}^{\infty}f\left(\left\lfloor\frac{n}{m}\right\rfloor\right)\)?</a></h3>
+<p>We define \(f’(x) = f\left(\left\lfloor\frac{N}{x}\right\rfloor\right)\), and \(g’(x) = g\left(\left\lfloor\frac{N}{x}\right\rfloor\right)\) Then we have the following:</p>
+<p>\[
+\begin{align*}
+g’(n) &amp;= \sum_{m = 1}^{\infty}f\left(\left\lfloor\frac{\left\lfloor\frac{N}{n}\right\rfloor}{m}\right\rfloor\right) \\
+&amp;= \sum_{m = 1}^{\infty}f\left(\left\lfloor\frac{N}{mn}\right\rfloor\right) \\
+&amp;= \sum_{m = 1}^{\infty}f’(mn)
+\end{align*}<br>\]</p>
+<p>Which is our original problem. Solving and substituting gives:</p>
+<p>\[
+\begin{align*}
+f’(1) &amp;= \sum_{m = 1}^{\infty}\mu(m)g’(m) \\
+f(N) &amp;= \sum_{m = 1}^{\infty}\mu(m)g\left(\left\lfloor\frac{N}{m}\right\rfloor\right)
+\end{align*}<br>\]</p>
+<p>Which is a more “traditional” looking Mobius inversion.</p>
+<h3 id="what-if-gn-doesnt-sum-to-infinity"><a class="header" href="#what-if-gn-doesnt-sum-to-infinity">What if \(g(n)\) doesn’t sum to infinity?</a></h3>
+<p>Say you have \(g(n) = \sum_{m = 1, mn \leq k}f(mn)\) instead of \(g(n) = \sum_{m = 1}^{\infty}f(mn)\). Then define \(f’(x)\) as follows:</p>
+<p>\[
+f’(n) =
+\begin{cases}
+f(x) &amp; x \leq k \\
+0 &amp; \text{otherwise} \\
+\end{cases}
+\]</p>
+<p>Then you have \(g(n) = \sum_{m = 1}^{\infty}f’(mn)\) which is our original problem. We also have \(g(n) = 0\) when \(n &gt; k\) by definition. Therefore the solution is given by:</p>
+<p>\[f(1) = \sum_{m = 1}^{k}\mu(m)g(m)\]</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="diophantine-equations"><a class="header" href="#diophantine-equations">Diophantine Equations</a></h1>
+<h2 id="a--xy"><a class="header" href="#a--xy">\(a = xy\)</a></h2>
+<p>Say we want to find \(x\), \(y\), and we are given \(a\). This is just factorization. If we have to  do this repeatedly for many numbers, the most efficient way is to use a sieve, which will factorise many numbers at once.</p>
+<h2 id="a--x2---y2"><a class="header" href="#a--x2---y2">\(a = x^2 - y^2\)</a></h2>
+<p>This is a difference of squares. In this case, we can factorise out \(a = (x + y)(x - y)\). Let \(m = x + y\) and \(n = x - y\), then we have \(a = mn\) which we can solve by factorisation. Once we have \(m\) and \(n\), we can find \(x\) and \(y\) again.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="modular-arithmetic"><a class="header" href="#modular-arithmetic">Modular Arithmetic</a></h1>
+<p>This is the big one. Modular arithmetic occurs in almost every difficult competitive programming question, since numbers will almost certainly overflow a fixed width integer. Modular arithmetic forms a finite group. This is good for us since a finite group can be represented with a finite amount of memory.</p>
+<p>We note the following:</p>
+<p>\[
+\begin{align*}
+(a \mod m) + (b \mod m) &amp;\equiv a + b \mod m \\
+(a \mod m) - (b \mod m) &amp;\equiv a - b \mod m \\
+(a \mod m) \cdot (b \mod m) &amp;\equiv a \cdot b \mod m \\
+(a \mod m)^b &amp;\equiv a^b \mod m
+\end{align*}
+\]</p>
+<pre class="playground"><code class="language-rust editable">fn main() {
+    let (a, b, m) = (5, 9, 11);
+
+    assert_eq!(((a % m) + (b % m)) % m, (a + b) % m);
+    assert_eq!(((a % m) - (b % m)) % m, (a - b) % m);
+    assert_eq!(((a % m) * (b % m)) % m, (a * b) % m);
+}</code></pre>
+<p>This allows us to reduce the values of \(a\) and \(b\) before we do any calculations, and still end up with the same result, allowing us to work with much smaller numbers than we would normally for most calculations.</p>
+<p>Exponentiation is a little different. In the case we have coprime \(a\) and \(p\), then \(a^{\phi(p)} \equiv 1\mod p\) which is given by Euler’s theorem. Therefore:</p>
+<p>\[
+\begin{align*}
+a^{b \mod \phi(p)} \equiv a^b \mod p
+\end{align*}
+\]</p>
+<h2 id="division"><a class="header" href="#division">Division</a></h2>
+<p>The first step to calculate \(\frac{b}{a} = ba^{-1}\) is to first calculate \(a^{-1}\). We know that \(aa^{-1} \equiv 1 \mod p\). which can be rewritten as:</p>
+<p>\[
+\begin{align*}
+aa^{-1} &amp;= 1 \mod p \\
+aa^{-1} &amp;= py + 1 \\
+aa^{-1} - py &amp;= 1 \\
+\end{align*}
+\]</p>
+<p>We know how to solve the similar equation \(ax + by = gcd(a, b)\) using the <a href="#bézouts-identity">Bézout’s identity</a>. If \(a\) and \(p\) are coprime, then \(gcd(a, p) = 1\) and we can find the solution to \(aa^{-1} - py = 1 = gcd(a, p)\). If they are not coprime, then there is no inverse, and we cannot perform modular division.</p>
+<p>So the process to find \(\frac{b}{a} \mod p\) is as follows:</p>
+<ul>
+<li>Solve for \(x\) in \(ax - py = 1\) using Bézout’s identity. A solution only exists if \(gcd(a, p) = 1\)</li>
+<li>\(x = a^{-1}\) is the inverse of \(a\)</li>
+<li>The solution is \(ba^-1\)</li>
+</ul>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<p>Let’s find \(4/3 \mod 7\). Firstly, we solve \(3x + 7y = gcd(3, 7)\)</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Step</th><th>equation 1</th><th>equation 2</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>\(1\cdot3 + 0\cdot7 = 3\)</td><td>\(0\cdot3 + 1\cdot7 = 7\)</td></tr>
+<tr><td>2</td><td>\(1\cdot3 + 0\cdot7 = 3\)</td><td>\(-1\cdot3 + 1\cdot7 = 4\)</td></tr>
+<tr><td>3</td><td>\(1\cdot3 + 0\cdot7 = 3\)</td><td>\(-2\cdot3 + 1\cdot7 = 1\)</td></tr>
+<tr><td>4</td><td>\(3\cdot3 - 1\cdot7 = 2\)</td><td>\(-2\cdot3 + 1\cdot7 = 1\)</td></tr>
+<tr><td>5</td><td>\(5\cdot3 - 2\cdot7 = 1\)</td><td>\(-2\cdot3 + 1\cdot7 = 1\)</td></tr>
+</tbody>
+</table>
+</div>
+<p>Which gives us \(3x + 7y = 3\cdot5 - 7\cdot2 = 1 = gcd(3, 7)\). The gcd is \(1\) so we have a solution \((x, y) = (5, 2)\). \(x\) is the inverse of \(a\). The final step is to multiply by \(b\)</p>
+<p>\[
+\begin{align*}
+4/3 &amp;= 4\cdot3^{-1} \mod 7 \\
+&amp;= 4\cdot5 \mod 7 \\
+&amp;= 6 \mod 7\\
+\end{align*}
+\]</p>
+<p>To verify this is correct we can multiply by \(3\)</p>
+<p>\[
+\begin{align*}
+4/3 &amp;= 6 \mod 7 \\
+4 &amp;= 6\cdot3 \mod 7 \\
+&amp;= 18 \mod 7 \\
+&amp;= 4 \mod 7 \\
+\end{align*}
+\]</p>
+<h2 id="square-roots"><a class="header" href="#square-roots">Square roots</a></h2>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dynamic-programming"><a class="header" href="#dynamic-programming">Dynamic Programming</a></h1>
+<p>Dynamic programming is a method of solving problems that can be expressed recursively. Note that, we can always rewrite a non recursive function recursively. Basically, we save the result of intermediate computations. This is called memoization. Consider the Fibbonacci sequence:</p>
+<p>\[
+\begin{align*}
+F_0 &amp;= 0 \\
+F_1 &amp;= 1 \\
+F_n &amp;= F_{n - 1} + F_{n - 2}
+\end{align*}
+\]</p>
+<p>And a naive implementation:</p>
+<pre class="playground"><code class="language-rust editable">fn fibonacci(n: u64) -&gt; u64 {
+    match n {
+        0 =&gt; 0,
+        1 =&gt; 1,
+        n =&gt; fibonacci(n - 1) + fibonacci(n - 2)
+    }
+}
+
+assert_eq!(fibonacci(5), 5);
+assert_eq!(fibonacci(10), 55);</code></pre>
+<p>This takes \(O(F_n)\) time to calculate, since every addition we perform adds \(1\) to the result. This is because in the process of calculating our final results, we perform many duplicate calls.</p>
+<p>Instead of calculating these intermediate values many times over, we can store them in a cache and retrieve them when necessary. This allows us to calculate much larger versions of \(F_n\)</p>
+<pre class="playground"><code class="language-rust editable">use std::collections::HashMap;
+
+fn fibonacci(cache: &amp;mut HashMap&lt;u64, u64&gt;, n: u64) -&gt; u64 {
+    // We have already calculated this before, skip the calculation and return
+    // the value
+    if let Some(result) = cache.get(&amp;n) {
+        return *result;
+    }
+
+    // Perform the actual calculation
+    let result = match n {
+        0 =&gt; 0,
+        1 =&gt; 1,
+        n =&gt; fibonacci(cache, n - 1) + fibonacci(cache, n - 2)
+    };
+
+    // Store the result of the calculation for later
+    cache.insert(n, result);
+    return result;
+}
+
+let mut cache = HashMap::new();
+assert_eq!(fibonacci(&amp;mut cache, 60), 1548008755920);
+assert_eq!(fibonacci(&amp;mut cache, 78), 8944394323791464);</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace-2a3cd908.js"></script>
+        <script src="mode-rust-2c9d5c9a.js"></script>
+        <script src="editor-16ca416c.js"></script>
+        <script src="theme-dawn-4493f9c8.js"></script>
+        <script src="theme-tomorrow_night-9dbe62a9.js"></script>
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
