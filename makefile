@@ -14,3 +14,6 @@ build:
 serve_pe_book:
 	cd _pe_book_src && mdbook serve
 
+serve_ksp_book:
+	cd _ksp_book_src && mdbook serve
+
